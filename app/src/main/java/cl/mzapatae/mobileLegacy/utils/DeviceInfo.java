@@ -1,4 +1,4 @@
-package cl.mzapatae.mobileapp.utils;
+package cl.mzapatae.mobileLegacy.utils;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;

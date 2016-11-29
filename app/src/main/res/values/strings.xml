@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MobileApp</string>
+    <string name="app_name">Mobile Legacy</string>
 
     <string name="textview_welcome">Bienvenido</string>
     <string name="textview_register">Registrate</string>

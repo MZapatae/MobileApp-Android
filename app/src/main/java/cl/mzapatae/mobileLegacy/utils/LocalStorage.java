@@ -1,4 +1,4 @@
-package cl.mzapatae.mobileapp.utils;
+package cl.mzapatae.mobileLegacy.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,7 +17,7 @@ import android.util.Log;
 public class LocalStorage {
     private static final String TAG = "LocalStorage";
 
-    private static final String PREF_STORAGE_FILE = "mobileapp.storage";
+    private static final String PREF_STORAGE_FILE = "mobileLegacy.storage";
     private static final String PREF_LOGGED_IN = "userLoggedIn";
 
     private static final String PREF_APP_NAME = "appName";

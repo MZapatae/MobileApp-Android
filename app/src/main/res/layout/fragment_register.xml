@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:background="@color/app.primary"
-    tools:context="cl.mzapatae.mobileapp.fragments.RegisterFragment">
+    tools:context="cl.mzapatae.mobileLegacy.fragments.RegisterFragment">
 
     <TextView
         android:id="@+id/text_title"

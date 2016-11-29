@@ -1,10 +1,9 @@
-package cl.mzapatae.mobileapp.fragments;
+package cl.mzapatae.mobileLegacy.fragments;
 
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,8 @@ import android.widget.EditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cl.mzapatae.mobileapp.R;
-import cl.mzapatae.mobileapp.base.FragmentBase;
-import retrofit2.Call;
-import retrofit2.Response;
+import cl.mzapatae.mobileLegacy.R;
+import cl.mzapatae.mobileLegacy.base.FragmentBase;
 
 /**
  * A simple {@link Fragment} subclass.

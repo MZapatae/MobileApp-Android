@@ -1,4 +1,4 @@
-package cl.mzapatae.mobileapp;
+package cl.mzapatae.mobileLegacy;
 
 import org.junit.Test;
 

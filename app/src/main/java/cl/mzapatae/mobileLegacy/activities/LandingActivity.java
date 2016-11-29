@@ -1,12 +1,12 @@
-package cl.mzapatae.mobileapp.activities;
+package cl.mzapatae.mobileLegacy.activities;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import cl.mzapatae.mobileapp.R;
-import cl.mzapatae.mobileapp.fragments.WelcomeFragment;
+import cl.mzapatae.mobileLegacy.R;
+import cl.mzapatae.mobileLegacy.fragments.WelcomeFragment;
 
 public class LandingActivity extends AppCompatActivity {
     private static final String TAG = "Landing Screen";

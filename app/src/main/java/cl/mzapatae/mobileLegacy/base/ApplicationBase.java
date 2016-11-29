@@ -1,10 +1,10 @@
-package cl.mzapatae.mobileapp.base;
+package cl.mzapatae.mobileLegacy.base;
 
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import cl.mzapatae.mobileapp.utils.LocalStorage;
+import cl.mzapatae.mobileLegacy.utils.LocalStorage;
 
 /**
  * @author Miguel A. Zapata - MZapatae

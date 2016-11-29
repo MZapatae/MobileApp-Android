@@ -1,4 +1,4 @@
-package cl.mzapatae.mobileapp.fragments;
+package cl.mzapatae.mobileLegacy.fragments;
 
 
 import android.os.Bundle;
@@ -11,9 +11,9 @@ import android.widget.Button;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cl.mzapatae.mobileapp.R;
-import cl.mzapatae.mobileapp.base.FragmentBase;
-import cl.mzapatae.mobileapp.enums.Animation;
+import cl.mzapatae.mobileLegacy.R;
+import cl.mzapatae.mobileLegacy.base.FragmentBase;
+import cl.mzapatae.mobileLegacy.enums.Animation;
 
 /**
  * A simple {@link Fragment} subclass.

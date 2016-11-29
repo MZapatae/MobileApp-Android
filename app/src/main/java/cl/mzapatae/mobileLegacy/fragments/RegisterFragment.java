@@ -1,4 +1,4 @@
-package cl.mzapatae.mobileapp.fragments;
+package cl.mzapatae.mobileLegacy.fragments;
 
 
 import android.content.Context;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cl.mzapatae.mobileapp.R;
+import cl.mzapatae.mobileLegacy.R;
 
 /**
  * A simple {@link Fragment} subclass.

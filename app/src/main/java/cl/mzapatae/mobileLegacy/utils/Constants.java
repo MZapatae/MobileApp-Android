@@ -1,4 +1,4 @@
-package cl.mzapatae.mobileapp.utils;
+package cl.mzapatae.mobileLegacy.utils;
 
 /**
  * @author Miguel A. Zapata - MZapatae
@@ -8,5 +8,5 @@ package cl.mzapatae.mobileapp.utils;
  */
 
 public class Constants {
-    public static final String PACKAGE_APP = "cl.mzapatae.mobileapp";
+    public static final String PACKAGE_APP = "cl.mzapatae.mobileLegacy";
 }
