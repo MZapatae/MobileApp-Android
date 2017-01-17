@@ -18,7 +18,7 @@ public class LandingActivity extends AppCompatActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = WelcomeFragment.newInstance();
-        if (fragment != null) fragmentManager.beginTransaction().replace(R.id.fragment_container,fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.fragment_container,fragment).commit();
     }
 }
 

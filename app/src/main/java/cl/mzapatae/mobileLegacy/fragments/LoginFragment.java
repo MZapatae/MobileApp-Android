@@ -2,19 +2,26 @@ package cl.mzapatae.mobileLegacy.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cl.mzapatae.mobileLegacy.R;
 import cl.mzapatae.mobileLegacy.base.FragmentBase;
+import cl.mzapatae.mobileLegacy.utils.FormValidator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,11 +29,18 @@ import cl.mzapatae.mobileLegacy.base.FragmentBase;
 public class LoginFragment extends FragmentBase {
     private static final String TAG = "Login Fragment";
 
-    @BindView(R.id.edit_email) EditText mEditEmail;
-    @BindView(R.id.edit_password) EditText mEditPassword;
+    @BindView(R.id.edit_email) TextInputEditText mEditEmail;
+    @BindView(R.id.edit_password) TextInputEditText mEditPassword;
     @BindView(R.id.button_login) Button mButtonLogin;
+    @BindView(R.id.edit_layout_email) TextInputLayout mEditLayoutEmail;
+    @BindView(R.id.edit_layout_password) TextInputLayout mEditLayoutPassword;
 
     private Context mContext;
+    private String mUserUID = null;
+    private String mUserEmail = null;
+    private String mUserProviderID = null;
+    private String mUserPhotoUrl = null;
+    private String mUserToken = null;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -39,30 +53,80 @@ public class LoginFragment extends FragmentBase {
      * @return A new instance of fragment LoginFragment.
      */
     public static LoginFragment newInstance() {
-        LoginFragment fragment = new LoginFragment();
+        return new LoginFragment();
+    }
 
-        return fragment;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
-
-
+        mContext = getContext();
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     @OnClick({R.id.button_login})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_login:
-                loginUser(mEditEmail.getText().toString(), mEditPassword.getText().toString());
+                if (isLoginValid()) {
+                    signInUser(mEditEmail.getText().toString(), mEditPassword.getText().toString());
+                }
                 break;
         }
     }
 
-    private void loginUser(String email, String password) {
+    private boolean isLoginValid() {
+        String emailValue = mEditEmail.getText().toString().trim();
+        String passwordValue = mEditPassword.getText().toString().trim();
+
+        mEditEmail.setText(emailValue);
+        mEditPassword.setText(passwordValue);
+
+        Log.d(TAG, "Validate Email: " + emailValue);
+        if (!FormValidator.isValidEmail(emailValue)) {
+            mEditLayoutEmail.setError(getString(R.string.error_invalid_email));
+            mEditLayoutEmail.requestFocus();
+            mEditEmail.setSelection(emailValue.length());
+            Log.d(TAG, "Validation: Fail!");
+            Log.i(TAG, "Login Form is Invalid!");
+            return false;
+        } else {
+            Log.d(TAG, "Validation: Success!");
+            mEditLayoutEmail.setErrorEnabled(false);
+        }
+
+        Log.d(TAG, "Validate Password: ********");
+        if (!FormValidator.isValidPassword(passwordValue)) {
+            mEditLayoutPassword.setError(getString(R.string.error_invalid_password));
+            mEditLayoutEmail.requestFocus();
+            mEditPassword.setSelection(passwordValue.length());
+            Log.d(TAG, "Validation: Fail!");
+            Log.i(TAG, "Login Form is Invalid!");
+            return false;
+        } else {
+            Log.d(TAG, "Validation: Success!");
+            mEditLayoutPassword.setErrorEnabled(false);
+        }
+        Log.i(TAG, "Login Form is Valid!");
+        return true;
+    }
+
+    private void signInUser(String email, String password) {
 
     }
 }
