@@ -23,7 +23,14 @@ public class FormValidator {
     }
 
     public static boolean isValidPassword(String password) {
-        String regex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$"; //Minimum 6 characters at least 1 Alphabet and 1 Number
+        /*
+        (?=.*[a-zA-Z])        At least one character in [a-zA-Z]
+        (?=.*\d)              At least one digit.
+        (?=.*[^a-zA-Z0-9\s])  At least one character that's not in [a-zA-Z0-9\s]
+        .{6,}                 At least 6 characters.
+         */
+
+        String regex = "^(?=.*[a-zA-Z]).{6,}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(password);
         return (matcher.matches() && !isEmptyText(password));

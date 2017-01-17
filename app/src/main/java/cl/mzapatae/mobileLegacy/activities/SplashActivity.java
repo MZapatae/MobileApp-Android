@@ -57,11 +57,11 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void saveDeviceInfoData(DeviceInfo deviceInfo){
-        LocalStorage.setDeviceId(deviceInfo.getAndroidId());
-        LocalStorage.setVersionApp(deviceInfo.getVersionApp());
-        LocalStorage.setModelDevice(deviceInfo.getModelDevice());
-        LocalStorage.setManufacturerDevice(deviceInfo.getManufacturerDevice());
-        LocalStorage.setAndroidVersion(deviceInfo.getAndroidVersion());
-        LocalStorage.setAppName(deviceInfo.getAppName());
+        LocalStorage.setPrefDeviceId(deviceInfo.getAndroidId());
+        LocalStorage.setPrefVersionApp(deviceInfo.getVersionApp());
+        LocalStorage.setPrefModelDevice(deviceInfo.getModelDevice());
+        LocalStorage.setPrefManufacturerDevice(deviceInfo.getManufacturerDevice());
+        LocalStorage.setPrefAndroidVersion(deviceInfo.getAndroidVersion());
+        LocalStorage.setPrefAppName(deviceInfo.getAppName());
     }
 }

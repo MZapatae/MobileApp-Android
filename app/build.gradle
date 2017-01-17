@@ -11,8 +11,17 @@ android {
         versionName "0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
+        def RELEASE_SERVER = "\"http://190.196.23.181/APIRest/\"";
+        def TESTING_SERVER = "\"http://190.196.23.181/APIRest/\"";
+
+        debug {
+            buildConfigField "String", "API_BASE", TESTING_SERVER
+        }
+
         release {
+            buildConfigField "String", "API_BASE", RELEASE_SERVER
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

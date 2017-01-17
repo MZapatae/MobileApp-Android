@@ -19,7 +19,7 @@ import cl.mzapatae.mobileLegacy.BuildConfig;
 public class LocalStorage {
     private static final String TAG = "LocalStorage";
 
-    private static final String PREF_STORAGE_FILE = "mobileFirebase.storage";
+    private static final String PREF_STORAGE_FILE = "mobileApp.storage";
 
     private static final String PREF_APP_NAME = "appName";
     private static final String PREF_DEVICE_ID = "deviceId";

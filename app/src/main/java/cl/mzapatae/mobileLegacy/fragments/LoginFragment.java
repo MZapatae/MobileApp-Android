@@ -2,9 +2,7 @@ package cl.mzapatae.mobileLegacy.fragments;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -13,15 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cl.mzapatae.mobileLegacy.R;
+import cl.mzapatae.mobileLegacy.apiclient.RetrofitManager;
 import cl.mzapatae.mobileLegacy.base.FragmentBase;
+import cl.mzapatae.mobileLegacy.datamodel.gson.AuthLoginResponse;
+import cl.mzapatae.mobileLegacy.utils.DialogManager;
 import cl.mzapatae.mobileLegacy.utils.FormValidator;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -127,6 +128,31 @@ public class LoginFragment extends FragmentBase {
     }
 
     private void signInUser(String email, String password) {
+        Call<AuthLoginResponse> call = RetrofitManager.setupConnection(email, password).loginUser("dummy");
+        call.enqueue(new retrofit2.Callback<AuthLoginResponse>() {
 
+            @Override
+            public void onResponse(Call<AuthLoginResponse> call, Response<AuthLoginResponse> response) {
+                try {
+                    switch (response.body().getMetaResponse().getCode()) {
+                        case 200: //TODO: Use Enum
+                            DialogManager.showSimpleAlert(mContext, response.body().getMetaResponse().getMessage());
+                            break;
+
+                        default:
+                            DialogManager.showSimpleMessage(mContext, response.body().getMetaResponse().getMessage());
+                            break;
+                    }
+                } catch (Exception e) {
+                    DialogManager.showSimpleAlert(mContext, "Error: Response Corrupto");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AuthLoginResponse> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+                DialogManager.showSimpleAlert(mContext, t.getMessage());
+            }
+        });
     }
 }

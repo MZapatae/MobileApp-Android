@@ -14,19 +14,29 @@ import cl.mzapatae.mobileLegacy.R;
  */
 
 public class DialogManager {
-    public static void showAlertSimple(Context context, int message_resource) {
+    public static void showSimpleAlert(Context context, int message_resource) {
         new MaterialDialog.Builder(context)
-                .title(R.string.alert_title_error)
+                .title(R.string.dialog_title_error)
                 .content(message_resource)
-                .positiveText(R.string.alert_button_accept)
+                .positiveText(R.string.dialog_button_accept)
                 .show();
     }
 
-    public static void showAlertSimple(Context context, String message) {
+    public static void showSimpleAlert(Context context, String message) {
         new MaterialDialog.Builder(context)
-                .title(R.string.alert_title_error)
+                .title(R.string.dialog_title_error)
                 .content(message)
-                .positiveText(R.string.alert_button_accept)
+                .positiveText(R.string.dialog_button_accept)
                 .show();
     }
+
+    public static void showSimpleMessage(Context context, String message) {
+        new MaterialDialog.Builder(context)
+                .title(R.string.dialog_title_alert)
+                .content(message)
+                .positiveText(R.string.dialog_button_accept)
+                .show();
+    }
+
+
 }
