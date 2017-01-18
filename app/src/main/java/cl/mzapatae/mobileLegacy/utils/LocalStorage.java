@@ -16,6 +16,7 @@ import cl.mzapatae.mobileLegacy.BuildConfig;
  * E-mail: miguel.zapatae@gmail.com
  */
 
+//TODO: Improve with Singleton
 public class LocalStorage {
     private static final String TAG = "LocalStorage";
 

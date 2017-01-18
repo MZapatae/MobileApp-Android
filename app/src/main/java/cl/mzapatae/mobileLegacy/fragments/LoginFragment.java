@@ -16,8 +16,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cl.mzapatae.mobileLegacy.R;
-import cl.mzapatae.mobileLegacy.apiclient.RetrofitManager;
+import cl.mzapatae.mobileLegacy.apiclient.RestServices;
+import cl.mzapatae.mobileLegacy.apiclient.RetrofitClient;
 import cl.mzapatae.mobileLegacy.base.FragmentBase;
+import cl.mzapatae.mobileLegacy.datamodel.objects.APIError;
 import cl.mzapatae.mobileLegacy.datamodel.gson.AuthLoginResponse;
 import cl.mzapatae.mobileLegacy.utils.DialogManager;
 import cl.mzapatae.mobileLegacy.utils.FormValidator;
@@ -128,20 +130,18 @@ public class LoginFragment extends FragmentBase {
     }
 
     private void signInUser(String email, String password) {
-        Call<AuthLoginResponse> call = RetrofitManager.setupConnection(email, password).loginUser("dummy");
-        call.enqueue(new retrofit2.Callback<AuthLoginResponse>() {
+        final RestServices restServices = RetrofitClient.newConnection(RestServices.class, email, password, "PRUEBA_API");
 
+        Call<AuthLoginResponse> call = restServices.loginUser("dummy");
+        call.enqueue(new retrofit2.Callback<AuthLoginResponse>() {
             @Override
             public void onResponse(Call<AuthLoginResponse> call, Response<AuthLoginResponse> response) {
                 try {
-                    switch (response.body().getMetaResponse().getCode()) {
-                        case 200: //TODO: Use Enum
-                            DialogManager.showSimpleAlert(mContext, response.body().getMetaResponse().getMessage());
-                            break;
-
-                        default:
-                            DialogManager.showSimpleMessage(mContext, response.body().getMetaResponse().getMessage());
-                            break;
+                    if (response.isSuccessful()) {
+                        DialogManager.showSimpleAlert(mContext, response.body().getMetaResponse().getMessage());
+                    } else {
+                        APIError error = RetrofitClient.parseHttpError(response);
+                        DialogManager.showSimpleAlert(mContext, error.message());
                     }
                 } catch (Exception e) {
                     DialogManager.showSimpleAlert(mContext, "Error: Response Corrupto");

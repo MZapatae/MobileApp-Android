@@ -4,8 +4,6 @@ import cl.mzapatae.mobileLegacy.datamodel.gson.AuthLoginResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.HEAD;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 /**
@@ -22,10 +20,8 @@ public interface RestServices {
      *
      * @return
      */
-
-
     @FormUrlEncoded
-    @POST("public/auth_registre")
+    @POST("public/auth_loggin")
     Call<AuthLoginResponse> loginUser(
             @Field("value") String dummy
     );
