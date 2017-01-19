@@ -130,8 +130,7 @@ public class LoginFragment extends FragmentBase {
     }
 
     private void signInUser(String email, String password) {
-        final RestServices restServices = RetrofitClient.newConnection(RestServices.class, email, password, "PRUEBA_API");
-
+        RestServices restServices = RetrofitClient.setAuthConnection(RestServices.class, email, password);
         Call<AuthLoginResponse> call = restServices.loginUser("dummy");
         call.enqueue(new retrofit2.Callback<AuthLoginResponse>() {
             @Override

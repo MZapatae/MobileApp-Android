@@ -1,4 +1,4 @@
-package cl.mzapatae.mobileLegacy.apiclient;
+package cl.mzapatae.mobileLegacy.apiclient.interceptors;
 
 import android.util.Base64;
 

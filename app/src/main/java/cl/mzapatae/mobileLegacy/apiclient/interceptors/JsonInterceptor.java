@@ -1,4 +1,4 @@
-package cl.mzapatae.mobileLegacy.apiclient;
+package cl.mzapatae.mobileLegacy.apiclient.interceptors;
 
 import android.util.Log;
 
@@ -22,7 +22,7 @@ import okio.Buffer;
  * E-mail: miguel.zapatae@gmail.com
  */
 
-class LogInterceptor implements Interceptor {
+public class JsonInterceptor implements Interceptor {
     private static final String TAG = "Loggin Interceptor";
     @Override
     public Response intercept(Chain chain) throws IOException {

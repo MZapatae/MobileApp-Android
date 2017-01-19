@@ -1,12 +1,3 @@
-# Built application files
-*.apk
-
-# Files for the Dalvik VM
-*.dex
-
-# Java class files
-*.class
-
 # Generated files
 bin/
 gen/
@@ -16,6 +7,7 @@ out/
 # Gradle generated files
 .gradle/
 build/
+/gradle.properties
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -51,7 +43,6 @@ com_crashlytics_export_strings.xml
 .idea/tasks.xml
 .idea/.name
 .idea/scopes/scope_settings.xml
-.idea/vcs.xml
 
 # OS-specific files
 .DS_Store

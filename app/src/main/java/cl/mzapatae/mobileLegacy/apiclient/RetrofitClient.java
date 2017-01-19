@@ -5,6 +5,9 @@ import java.lang.annotation.Annotation;
 import java.util.concurrent.TimeUnit;
 
 import cl.mzapatae.mobileLegacy.BuildConfig;
+import cl.mzapatae.mobileLegacy.apiclient.interceptors.BasicAuthInterceptor;
+import cl.mzapatae.mobileLegacy.apiclient.interceptors.JsonInterceptor;
+import cl.mzapatae.mobileLegacy.apiclient.interceptors.TokenAuthInterceptor;
 import cl.mzapatae.mobileLegacy.datamodel.objects.APIError;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -25,7 +28,7 @@ public class RetrofitClient {
     private static Retrofit mRetrofit;
 
     private static OkHttpClient.Builder httpBuilder = new OkHttpClient.Builder()
-            .addInterceptor(new LogInterceptor())
+            .addInterceptor(new JsonInterceptor())
             .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
             .readTimeout(30, TimeUnit.SECONDS)
             .connectTimeout(20, TimeUnit.SECONDS);
@@ -34,21 +37,14 @@ public class RetrofitClient {
             .baseUrl(BuildConfig.API_BASE)
             .addConverterFactory(GsonConverterFactory.create());
 
-
-    public static <S> S newConnection(Class<S> serviceClass) {
-        OkHttpClient client = httpBuilder.build();
+    public static <S> S setAuthConnection(Class<S> serviceClass, String user, String password) {
+        OkHttpClient client = httpBuilder.addInterceptor(new BasicAuthInterceptor(user, password)).build();
         mRetrofit = retrofitBuilder.client(client).build();
         return mRetrofit.create(serviceClass);
     }
 
-    public static <S> S newConnection(Class<S> serviceClass, String user, String password, String serverKey) {
-        OkHttpClient client = httpBuilder.addInterceptor(new HeaderAuthInterceptor(user, password, serverKey)).build();
-        mRetrofit = retrofitBuilder.client(client).build();
-        return mRetrofit.create(serviceClass);
-    }
-
-    public static <S> S newConnection(Class<S> serviceClass, String tokenUser, String ServerKey) {
-        OkHttpClient client = httpBuilder.addInterceptor(new HeaderAuthInterceptor(tokenUser, ServerKey)).build();
+    public static <S> S setAuthConnection(Class<S> serviceClass, String userToken) {
+        OkHttpClient client = httpBuilder.addInterceptor(new TokenAuthInterceptor(userToken)).build();
         mRetrofit = retrofitBuilder.client(client).build();
         return mRetrofit.create(serviceClass);
     }
@@ -65,6 +61,4 @@ public class RetrofitClient {
         }
         return error;
     }
-
-
 }

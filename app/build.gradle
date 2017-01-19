@@ -10,6 +10,9 @@ android {
         versionCode 0
         versionName "0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        //To build this project, you will need to apply Api Key from own server
+        buildConfigField("String", "API_SERVER_KEY", API_SERVER_KEY)
     }
 
     buildTypes {
@@ -17,11 +20,13 @@ android {
         def TESTING_SERVER = "\"http://190.196.23.181/APIRest/\"";
 
         debug {
-            buildConfigField "String", "API_BASE", TESTING_SERVER
+            buildConfigField("String", "API_BASE", TESTING_SERVER)
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-DEBUG"
         }
 
         release {
-            buildConfigField "String", "API_BASE", RELEASE_SERVER
+            buildConfigField("String", "API_BASE", RELEASE_SERVER)
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
