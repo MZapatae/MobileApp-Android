@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import java.util.Arrays;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -22,8 +20,8 @@ import cl.mzapatae.mobileLegacy.R;
 import cl.mzapatae.mobileLegacy.apiclient.RestServices;
 import cl.mzapatae.mobileLegacy.apiclient.RetrofitClient;
 import cl.mzapatae.mobileLegacy.base.FragmentBase;
-import cl.mzapatae.mobileLegacy.datamodel.objects.APIError;
 import cl.mzapatae.mobileLegacy.datamodel.gson.AuthLoginResponse;
+import cl.mzapatae.mobileLegacy.datamodel.objects.APIError;
 import cl.mzapatae.mobileLegacy.utils.Crypt;
 import cl.mzapatae.mobileLegacy.utils.DialogManager;
 import cl.mzapatae.mobileLegacy.utils.FormValidator;
@@ -134,40 +132,35 @@ public class LoginFragment extends FragmentBase {
     }
 
     private void signInUser(String email, String password) {
-
-        Crypt crypt = new Crypt();
         try {
-            byte[] encripted = crypt.encrypt(password);
-            byte[] decripted = crypt.decrypt(encripted);
+            Crypt crypt = new Crypt();
+            String encryptedPass = Base64.encodeToString(crypt.encrypt(password), Base64.NO_WRAP);
 
-            Log.d(TAG, "ENCRYPT: " + Base64.encodeToString(encripted, Base64.NO_WRAP));
-            Log.d(TAG, "DECRYPT: " + new String(decripted, "UTF-8"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        RestServices restServices = RetrofitClient.setAuthConnection(RestServices.class, email, password);
-        Call<AuthLoginResponse> call = restServices.loginUser("dummy");
-        call.enqueue(new retrofit2.Callback<AuthLoginResponse>() {
-            @Override
-            public void onResponse(Call<AuthLoginResponse> call, Response<AuthLoginResponse> response) {
-                try {
-                    if (response.isSuccessful()) {
-                        DialogManager.showSimpleAlert(mContext, response.body().getMetaResponse().getMessage());
-                    } else {
-                        APIError error = RetrofitClient.parseHttpError(response);
-                        DialogManager.showSimpleAlert(mContext, error.message());
+            RestServices restServices = RetrofitClient.setAuthConnection(RestServices.class, email, encryptedPass);
+            Call<AuthLoginResponse> call = restServices.loginUser("dummy");
+            call.enqueue(new retrofit2.Callback<AuthLoginResponse>() {
+                @Override
+                public void onResponse(Call<AuthLoginResponse> call, Response<AuthLoginResponse> response) {
+                    try {
+                        if (response.isSuccessful()) {
+                            DialogManager.showSimpleAlert(mContext, response.body().getMetaResponse().getMessage());
+                        } else {
+                            APIError error = RetrofitClient.parseHttpError(response);
+                            DialogManager.showSimpleAlert(mContext, error.message());
+                        }
+                    } catch (Exception e) {
+                        DialogManager.showSimpleAlert(mContext, "Error: Response Corrupto");
                     }
-                } catch (Exception e) {
-                    DialogManager.showSimpleAlert(mContext, "Error: Response Corrupto");
                 }
-            }
 
-            @Override
-            public void onFailure(Call<AuthLoginResponse> call, Throwable t) {
-                Log.e(TAG, t.getMessage());
-                DialogManager.showSimpleAlert(mContext, t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<AuthLoginResponse> call, Throwable t) {
+                    Log.e(TAG, t.getMessage());
+                    DialogManager.showSimpleAlert(mContext, t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            DialogManager.showSimpleAlert(mContext, e.getMessage());
+        }
     }
 }
