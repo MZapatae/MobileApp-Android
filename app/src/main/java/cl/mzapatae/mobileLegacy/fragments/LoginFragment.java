@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +24,7 @@ import cl.mzapatae.mobileLegacy.apiclient.RetrofitClient;
 import cl.mzapatae.mobileLegacy.base.FragmentBase;
 import cl.mzapatae.mobileLegacy.datamodel.objects.APIError;
 import cl.mzapatae.mobileLegacy.datamodel.gson.AuthLoginResponse;
+import cl.mzapatae.mobileLegacy.utils.Crypt;
 import cl.mzapatae.mobileLegacy.utils.DialogManager;
 import cl.mzapatae.mobileLegacy.utils.FormValidator;
 import retrofit2.Call;
@@ -130,6 +134,18 @@ public class LoginFragment extends FragmentBase {
     }
 
     private void signInUser(String email, String password) {
+
+        Crypt crypt = new Crypt();
+        try {
+            byte[] encripted = crypt.encrypt(password);
+            byte[] decripted = crypt.decrypt(encripted);
+
+            Log.d(TAG, "ENCRYPT: " + Base64.encodeToString(encripted, Base64.NO_WRAP));
+            Log.d(TAG, "DECRYPT: " + new String(decripted, "UTF-8"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         RestServices restServices = RetrofitClient.setAuthConnection(RestServices.class, email, password);
         Call<AuthLoginResponse> call = restServices.loginUser("dummy");
         call.enqueue(new retrofit2.Callback<AuthLoginResponse>() {

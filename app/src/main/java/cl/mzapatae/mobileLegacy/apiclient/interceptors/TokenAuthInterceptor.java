@@ -29,7 +29,7 @@ public class TokenAuthInterceptor implements Interceptor{
         Request originalRequest = chain.request();
 
         Request requestBuilder = originalRequest.newBuilder()
-                .header("token-user", this.mUserToken)
+                .header("api-key-user", this.mUserToken)
                 .header("api-key", BuildConfig.API_SERVER_KEY)
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .method(originalRequest.method(), originalRequest.body())

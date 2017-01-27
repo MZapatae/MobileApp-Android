@@ -52,7 +52,6 @@ public class RetrofitClient {
     public static APIError parseHttpError(Response<?> response) {
         Converter<ResponseBody, APIError> converter = mRetrofit.responseBodyConverter(APIError.class, new Annotation[0]);
         APIError error;
-
         try {
             error = converter.convert(response.errorBody());
         } catch (IOException e) {
