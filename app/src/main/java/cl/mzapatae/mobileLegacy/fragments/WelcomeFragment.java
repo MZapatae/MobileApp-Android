@@ -59,9 +59,9 @@ public class WelcomeFragment extends FragmentBase {
                 replaceFragment(fragment, "loginFragment", Animation.FADE);
                 break;
             case R.id.button_signup:
-                //fragment = RegisterFragment.newInstance(0, "", "", "", "", "");
-                //replaceFragment(fragment, "registerFragmewnt", Animation.SLIDE_TO_RIGHT);
-                //break;
+                fragment = RegisterFragment.newInstance();
+                replaceFragment(fragment, "registerFragmewnt", Animation.SLIDE_TO_RIGHT);
+                break;
         }
     }
 

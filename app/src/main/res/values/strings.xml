@@ -20,6 +20,7 @@
     <string name="dialog_title_error">Error!</string>
     <string name="dialog_button_accept">Aceptar</string>
 
+    <!-- Form Validations Error -->
     <string name="error_invalid_email">Email Invalido</string>
     <string name="error_invalid_password">Password Invalida</string>
     <string name="error_invalid_first_name">Nombre Invalido</string>
@@ -28,4 +29,9 @@
     <string name="error_weak_password">Password demasiado debil</string>
     <string name="error_user_exists">Este correo ya se encuentra registrado</string>
     <string name="error_user_not_exists">Este correo no se encuentra registrado</string>
+
+    <!-- API Generic Error -->
+    <string name="error_http_500">Error 500: Problema interno de Servidor</string>
+    <string name="error_json_syntax">Respuesta ilegible</string>
+
 </resources>

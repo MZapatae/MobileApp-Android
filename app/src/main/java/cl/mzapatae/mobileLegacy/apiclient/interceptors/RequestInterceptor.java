@@ -10,28 +10,24 @@ import okhttp3.Response;
 /**
  * @author Miguel A. Zapata - MZapatae
  * @version 1.0
- * Created on: 19-01-17
+ * Created on: 30-01-17
  * E-mail: miguel.zapatae@gmail.com
  */
 
-public class TokenAuthInterceptor implements Interceptor{
-    private static final String TAG = "TokenAuth Interceptor";
-    private String mUserToken;
 
-
-    public TokenAuthInterceptor(String token) {
-        this.mUserToken = token;
-    }
-
+public class RequestInterceptor implements Interceptor {
+    private static final String TAG = "Request Interceptor";
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request originalRequest = chain.request();
 
         Request requestBuilder = originalRequest.newBuilder()
-                .header("api-key-user", this.mUserToken)
+                .header("api-key", BuildConfig.API_SERVER_KEY)
+                .header("Content-Type", "application/x-www-form-urlencoded")
                 .method(originalRequest.method(), originalRequest.body())
                 .build();
 
-        return chain.proceed(requestBuilder);    }
+        return chain.proceed(requestBuilder);
+    }
 }

@@ -137,8 +137,9 @@ public class LoginFragment extends FragmentBase {
             String encryptedPass = Base64.encodeToString(crypt.encrypt(password), Base64.NO_WRAP);
 
             RestServices restServices = RetrofitClient.setAuthConnection(RestServices.class, email, encryptedPass);
-            Call<AuthLoginResponse> call = restServices.loginUser("dummy");
+            Call<AuthLoginResponse> call = restServices.loginUser(null);
             call.enqueue(new retrofit2.Callback<AuthLoginResponse>() {
+
                 @Override
                 public void onResponse(Call<AuthLoginResponse> call, Response<AuthLoginResponse> response) {
                     try {
@@ -146,10 +147,10 @@ public class LoginFragment extends FragmentBase {
                             DialogManager.showSimpleAlert(mContext, response.body().getMetaResponse().getMessage());
                         } else {
                             APIError error = RetrofitClient.parseHttpError(response);
-                            DialogManager.showSimpleAlert(mContext, error.message());
+                            DialogManager.showSimpleAlert(mContext, RetrofitClient.buildErrorMessage(error));
                         }
                     } catch (Exception e) {
-                        DialogManager.showSimpleAlert(mContext, "Error: Response Corrupto");
+                        DialogManager.showSimpleAlert(mContext, R.string.error_json_syntax);
                     }
                 }
 

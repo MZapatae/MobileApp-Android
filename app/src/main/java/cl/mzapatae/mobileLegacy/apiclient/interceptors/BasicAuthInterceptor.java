@@ -17,7 +17,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class BasicAuthInterceptor implements Interceptor {
-    private static final String TAG = "Auth Interceptor";
+    private static final String TAG = "BasicAuth Interceptor";
     private String mUser;
     private String mPass;
 
@@ -35,8 +35,6 @@ public class BasicAuthInterceptor implements Interceptor {
 
         Request requestBuilder = originalRequest.newBuilder()
                 .header("Authorization", authKey)
-                .header("api-key", BuildConfig.API_SERVER_KEY)
-                .header("Content-Type", "application/x-www-form-urlencoded")
                 .method(originalRequest.method(), originalRequest.body())
                 .build();
 

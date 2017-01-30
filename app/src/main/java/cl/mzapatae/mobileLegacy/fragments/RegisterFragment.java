@@ -2,9 +2,7 @@ package cl.mzapatae.mobileLegacy.fragments;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -13,15 +11,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cl.mzapatae.mobileLegacy.R;
+import cl.mzapatae.mobileLegacy.apiclient.RestServices;
+import cl.mzapatae.mobileLegacy.apiclient.RetrofitClient;
+import cl.mzapatae.mobileLegacy.datamodel.gson.AuthRegisterResponse;
+import cl.mzapatae.mobileLegacy.datamodel.objects.APIError;
+import cl.mzapatae.mobileLegacy.utils.DialogManager;
 import cl.mzapatae.mobileLegacy.utils.FormValidator;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -171,8 +174,30 @@ public class RegisterFragment extends Fragment {
         return true;
     }
 
-
     private void registerUser(String email, String password) {
+        RestServices restServices = RetrofitClient.setConnection(RestServices.class);
+        Call<AuthRegisterResponse> call = restServices.registerUser(email, password);
+        call.enqueue(new retrofit2.Callback<AuthRegisterResponse>() {
 
+            @Override
+            public void onResponse(Call<AuthRegisterResponse> call, Response<AuthRegisterResponse> response) {
+                try {
+                    if (response.isSuccessful()) {
+                        DialogManager.showSimpleAlert(mContext, response.body().getMetaResponse().getMessage());
+                    } else {
+                        APIError error = RetrofitClient.parseHttpError(response);
+                        DialogManager.showSimpleAlert(mContext, RetrofitClient.buildErrorMessage(error));
+                    }
+                } catch (Exception e) {
+                    DialogManager.showSimpleAlert(mContext, R.string.error_json_syntax);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AuthRegisterResponse> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+                DialogManager.showSimpleAlert(mContext, t.getMessage());
+            }
+        });
     }
 }

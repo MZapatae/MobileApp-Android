@@ -23,7 +23,7 @@ import okio.Buffer;
  */
 
 public class JsonInterceptor implements Interceptor {
-    private static final String TAG = "Loggin Interceptor";
+    private static final String TAG = "Json Interceptor";
     @Override
     public Response intercept(Chain chain) throws IOException {
         try {
