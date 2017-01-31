@@ -17,6 +17,7 @@ public class AuthRegisterResponse {
 
     public class Response {
         @SerializedName("idresource") private String idResource;
+        @SerializedName("token_user") private String tokenUser;
 
         public String getIdResource() {
             return idResource;
@@ -24,6 +25,14 @@ public class AuthRegisterResponse {
 
         public void setIdResource(String idResource) {
             this.idResource = idResource;
+        }
+
+        public String getTokenUser() {
+            return tokenUser;
+        }
+
+        public void setTokenUser(String tokenUser) {
+            this.tokenUser = tokenUser;
         }
     }
 

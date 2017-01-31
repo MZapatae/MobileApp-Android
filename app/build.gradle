@@ -11,7 +11,7 @@ android {
         versionName "0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        //To build this project, you will need to apply Api Key from own server
+        //API Keys defines in gradle.properties
         buildConfigField("String", "API_SERVER_KEY", API_SERVER_KEY)
         buildConfigField("String", "AES_KEY", SECRET_AES_KEY)
         buildConfigField("String", "AES_IV", SECRET_AES_IV)
@@ -24,7 +24,7 @@ android {
         debug {
             buildConfigField("String", "API_BASE", TESTING_SERVER)
             applicationIdSuffix ".debug"
-            versionNameSuffix "-DEBUG"
+            versionNameSuffix " - DEBUG"
         }
 
         release {
@@ -37,13 +37,12 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+
     compile 'com.android.support:multidex:1.0.1'
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:support-v4:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:support-v4:25.1.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+    compile 'com.android.support:design:25.1.1'
 
     compile 'com.google.code.gson:gson:2.7'
 
@@ -55,8 +54,11 @@ dependencies {
     compile 'com.afollestad.material-dialogs:core:0.9.1.0'
 
     testCompile 'junit:junit:4.12'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile 'com.android.support:design:25.1.0'
 }
 
 

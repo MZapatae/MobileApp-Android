@@ -49,7 +49,6 @@ public class LocalStorage {
 
     public static void loginUser(String uid, String email,String firstName, String lastName, String displayName, String avatarUrl, String userProvider, String userToken) {
         SHARED_PREFERENCE.edit().putBoolean(PREF_LOGGED_IN, true).apply();
-
         SHARED_PREFERENCE.edit().putString(PREF_USER_UID, uid).apply();
         SHARED_PREFERENCE.edit().putString(PREF_USER_TOKEN, userToken).apply();
         SHARED_PREFERENCE.edit().putString(PREF_USER_EMAIL, email).apply();

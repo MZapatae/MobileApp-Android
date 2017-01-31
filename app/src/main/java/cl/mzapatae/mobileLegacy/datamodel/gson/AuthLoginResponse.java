@@ -24,11 +24,20 @@ public class AuthLoginResponse {
             this.tokenUser = tokenUser;
         }
     }
+
     public MetaResponse getMetaResponse() {
         return metaResponse;
     }
 
     public void setMetaResponse(MetaResponse metaResponse) {
         this.metaResponse = metaResponse;
+    }
+
+    public Response getResponse() {
+        return response;
+    }
+
+    public void setResponse(Response response) {
+        this.response = response;
     }
 }

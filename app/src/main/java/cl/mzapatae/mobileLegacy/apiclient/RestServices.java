@@ -21,7 +21,7 @@ public interface RestServices {
      * @param usuario: Correo Electronico del Usuario
      * @param password: Contraseña del usuario
      *
-     * @return idresource: Id del usuario creado
+     * @return AuthRegisterResponse
      */
     @FormUrlEncoded
     @POST("public/auth_register")

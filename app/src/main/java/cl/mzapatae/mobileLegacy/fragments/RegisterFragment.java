@@ -2,6 +2,7 @@ package cl.mzapatae.mobileLegacy.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -17,12 +18,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cl.mzapatae.mobileLegacy.R;
+import cl.mzapatae.mobileLegacy.activities.LandingActivity;
+import cl.mzapatae.mobileLegacy.activities.MainActivity;
 import cl.mzapatae.mobileLegacy.apiclient.RestServices;
 import cl.mzapatae.mobileLegacy.apiclient.RetrofitClient;
 import cl.mzapatae.mobileLegacy.datamodel.gson.AuthRegisterResponse;
 import cl.mzapatae.mobileLegacy.datamodel.objects.APIError;
 import cl.mzapatae.mobileLegacy.utils.DialogManager;
 import cl.mzapatae.mobileLegacy.utils.FormValidator;
+import cl.mzapatae.mobileLegacy.utils.LocalStorage;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -183,7 +187,23 @@ public class RegisterFragment extends Fragment {
             public void onResponse(Call<AuthRegisterResponse> call, Response<AuthRegisterResponse> response) {
                 try {
                     if (response.isSuccessful()) {
-                        DialogManager.showSimpleAlert(mContext, response.body().getMetaResponse().getMessage());
+                        //TODO: Add data POST to Register Service
+                        LocalStorage.loginUser(
+                                response.body().getResponse().getIdResource(),
+                                mEditEmail.getText().toString(),
+                                mEditName.getText().toString(),
+                                mEditLastname.getText().toString(),
+                                mEditUsername.getText().toString(),
+                                "",
+                                "EmailProvider",
+                                response.body().getResponse().getTokenUser()
+                                );
+
+                        Intent intent = new Intent().setClass(mContext, MainActivity.class);
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                        getActivity().finishAffinity();
+
                     } else {
                         APIError error = RetrofitClient.parseHttpError(response);
                         DialogManager.showSimpleAlert(mContext, RetrofitClient.buildErrorMessage(error));
