@@ -8,11 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cl.mzapatae.mobileApp.R;
+import cl.mzapatae.mobileApp.base.FragmentBase;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UserListFragment extends Fragment {
+public class UserListFragment extends FragmentBase {
 
 
     public UserListFragment() {

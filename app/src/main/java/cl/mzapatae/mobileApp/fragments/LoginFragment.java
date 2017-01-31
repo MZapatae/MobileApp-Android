@@ -155,7 +155,7 @@ public class LoginFragment extends FragmentBase {
                                     "Apellido",
                                     "Apodo",
                                     "",
-                                    "Email@Email.com",
+                                    "EmailProvider",
                                     response.body().getResponse().getTokenUser()
                             );
 

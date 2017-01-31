@@ -96,7 +96,7 @@ public class LocalStorage {
     }
 
     public static String getPrefUserEmail() {
-        return SHARED_PREFERENCE.getString(PREF_USER_LASTNAME, "");
+        return SHARED_PREFERENCE.getString(PREF_USER_EMAIL, "");
     }
 
     public static String getPrefUserAvatar() {
