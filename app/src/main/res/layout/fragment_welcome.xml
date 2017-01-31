@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
     android:background="@color/app.primary"
-    tools:context="cl.mzapatae.mobileLegacy.fragments.WelcomeFragment">
+    tools:context="cl.mzapatae.mobileApp.fragments.WelcomeFragment">
 
     <Button
         android:id="@+id/button_login"

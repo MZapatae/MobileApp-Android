@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app.primary"
-    tools:context="cl.mzapatae.mobileLegacy.activities.LandingActivity">
+    tools:context="cl.mzapatae.mobileApp.activities.LandingActivity">
 
     <FrameLayout
         android:id="@+id/fragment_container"
