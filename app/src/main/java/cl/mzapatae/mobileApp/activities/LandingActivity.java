@@ -6,9 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import cl.mzapatae.mobileApp.R;
+import cl.mzapatae.mobileApp.base.ActivityBase;
 import cl.mzapatae.mobileApp.fragments.WelcomeFragment;
 
-public class LandingActivity extends AppCompatActivity {
+public class LandingActivity extends ActivityBase {
     private static final String TAG = "Landing Screen";
 
     @Override

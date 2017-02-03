@@ -3,13 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="#234358"
     tools:context="cl.mzapatae.mobileApp.fragments.UserListFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="@string/hello_blank_fragment"
+        android:text="USER LIST"
         tools:layout_constraintTop_creator="1"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintBottom_creator="1"
@@ -23,7 +25,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        tools:text="USER LIST" />
+        android:layout_marginRight="8dp" />
 
 </android.support.constraint.ConstraintLayout>

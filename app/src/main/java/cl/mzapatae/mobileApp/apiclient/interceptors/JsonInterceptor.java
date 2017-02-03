@@ -10,6 +10,7 @@ import com.google.gson.JsonParser;
 import java.io.IOException;
 
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -51,7 +52,9 @@ public class JsonInterceptor implements Interceptor {
             return response.newBuilder().body(ResponseBody.create(response.body().contentType(), bodyString)).build();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
-            return null;
+            Request request = chain.request();
+            Response response = chain.proceed(request);
+            return response.newBuilder().body(ResponseBody.create(response.body().contentType(), "{}")).build();
         }
     }
 

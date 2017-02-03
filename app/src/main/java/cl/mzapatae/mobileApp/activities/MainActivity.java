@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,19 +28,41 @@ import java.util.List;
 
 import cl.mzapatae.mobileApp.R;
 import cl.mzapatae.mobileApp.base.ActivityBase;
+import cl.mzapatae.mobileApp.enums.Animation;
+import cl.mzapatae.mobileApp.fragments.UserDetailFragment;
+import cl.mzapatae.mobileApp.fragments.UserListFragment;
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
 public class MainActivity extends ActivityBase implements Drawer.OnDrawerItemClickListener {
-
     private static final String TAG = "Main Activity";
+    private static String STARTER_FRAGMENT_TAG = "starterFragment";
     private Drawer mDrawerMenu;
-    private int mDrawerSelectedItem = 1;
+    private int mDrawerSelectedIdentifier = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         createDrawerMenu(SetUpDrawerItems());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loadStarterFragment();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerMenu != null && mDrawerMenu.isDrawerOpen()) mDrawerMenu.closeDrawer();
+        else manageBackStack();
+    }
+
+    //TODO: Replace this fragment with default starter fragment
+    private void loadStarterFragment() {
+        Fragment starterFragment = getSupportFragmentManager().findFragmentByTag(STARTER_FRAGMENT_TAG);
+        if (starterFragment == null) starterFragment = UserListFragment.newInstance();
+        replaceFragment(starterFragment, STARTER_FRAGMENT_TAG, Animation.FADE);
     }
 
     private List<IDrawerItem> SetUpDrawerItems() {
@@ -69,10 +94,12 @@ public class MainActivity extends ActivityBase implements Drawer.OnDrawerItemCli
             public void cancel(ImageView imageView) {
                 //Picasso.with(imageView.getContext()).cancelRequest(imageView);
             }
+
             @Override
             public Drawable placeholder(Context ctx) {
                 return null;
             }
+
             @Override
             public Drawable placeholder(Context ctx, String tag) {
                 return null;
@@ -93,7 +120,7 @@ public class MainActivity extends ActivityBase implements Drawer.OnDrawerItemCli
                 .withOnAccountHeaderSelectionViewClickListener(new AccountHeader.OnAccountHeaderSelectionViewClickListener() {
                     @Override
                     public boolean onClick(View view, IProfile iProfile) {
-                        //TODO: Implement
+                        //TODO: Implement edit profile
                         return false;
                     }
                 }).build();
@@ -108,14 +135,20 @@ public class MainActivity extends ActivityBase implements Drawer.OnDrawerItemCli
                 .withSelectedItem(1)
                 .withOnDrawerItemClickListener(this)
                 .withDelayDrawerClickEvent(450)
-                //.withOnDrawerNavigationListener(this)
                 .build();
     }
 
     @Override
     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-        if (drawerItem.getIdentifier() != mDrawerSelectedItem) {
+        if (drawerItem.getIdentifier() != mDrawerSelectedIdentifier) {
+            Fragment fragment = null;
             switch (((int) drawerItem.getIdentifier())) {
+                case 1:
+                    fragment = UserListFragment.newInstance();
+                    break;
+                case 2:
+                    fragment = UserDetailFragment.newInstance();
+                    break;
                 case 3:
                     Log.d(TAG, "Logout Item Pressed");
                     LocalStorage.logoutUser();
@@ -125,12 +158,32 @@ public class MainActivity extends ActivityBase implements Drawer.OnDrawerItemCli
                 default:
                     break;
             }
-            mDrawerSelectedItem = (int) drawerItem.getIdentifier();
-        } else {
-            mDrawerMenu.closeDrawer();
-        }
+            mDrawerSelectedIdentifier = (int) drawerItem.getIdentifier();
+            if (fragment != null && drawerItem.getIdentifier() == 1) replaceFragment(fragment, STARTER_FRAGMENT_TAG, Animation.FADE);
+            else if (fragment != null) replaceFragment(fragment, "loadedFragment", Animation.FADE);
+        } else mDrawerMenu.closeDrawer();
+
         return false;
     }
 
+    private void manageBackStack() {
+        int index = getSupportFragmentManager().getBackStackEntryCount() - 1;
+        FragmentManager.BackStackEntry backEntry = getSupportFragmentManager().getBackStackEntryAt(index);
+        Fragment lastFragmentLoaded = getSupportFragmentManager().findFragmentByTag(backEntry.getName());
 
+        if (lastFragmentLoaded != null && lastFragmentLoaded.getTag().equals(STARTER_FRAGMENT_TAG)) {
+            finish();
+        } else {
+            if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+                clearBackstack();
+                loadStarterFragment();
+            } else finish();
+        }
+    }
+
+    public void clearBackstack() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentManager.executePendingTransactions();
+    }
 }
