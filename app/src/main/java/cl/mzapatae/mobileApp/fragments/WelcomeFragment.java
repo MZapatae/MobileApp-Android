@@ -56,11 +56,11 @@ public class WelcomeFragment extends FragmentBase {
         switch (view.getId()) {
             case R.id.button_login:
                 fragment = LoginFragment.newInstance();
-                replaceFragment(fragment, "loginFragment", Animation.FADE);
+                replaceFragment(fragment, "loginFragment", Animation.FADE, true);
                 break;
             case R.id.button_signup:
                 fragment = RegisterFragment.newInstance();
-                replaceFragment(fragment, "registerFragmewnt", Animation.SLIDE_TO_RIGHT);
+                replaceFragment(fragment, "registerFragmewnt", Animation.SLIDE_TO_RIGHT, true);
                 break;
         }
     }

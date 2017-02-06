@@ -19,7 +19,7 @@ import cl.mzapatae.mobileApp.enums.Animation;
 
 public class FragmentBase extends Fragment {
 
-    public void replaceFragment(Fragment fragment, String tag, Animation animation) {
+    public void replaceFragment(Fragment fragment, String tag, Animation animation, boolean addBackstack) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         switch (animation) {
             case BLINK:
@@ -36,7 +36,7 @@ public class FragmentBase extends Fragment {
                 break;
         }
         transaction.replace(R.id.fragment_container, fragment, tag);
-        transaction.addToBackStack(tag);
+        if (addBackstack) transaction.addToBackStack(tag);
         transaction.commit();
     }
 }
