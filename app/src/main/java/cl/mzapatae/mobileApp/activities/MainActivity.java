@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -24,17 +25,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cl.mzapatae.mobileApp.R;
-import cl.mzapatae.mobileApp.base.ActivityBase;
+import cl.mzapatae.mobileApp.base.BaseActivity;
 import cl.mzapatae.mobileApp.enums.Animation;
 import cl.mzapatae.mobileApp.fragments.EmptyFragment;
 import cl.mzapatae.mobileApp.fragments.UserDetailFragment;
 import cl.mzapatae.mobileApp.fragments.UserListFragment;
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
-public class MainActivity extends ActivityBase implements Drawer.OnDrawerItemClickListener {
+public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener {
     private static final String TAG = "Main Activity";
     private Drawer mDrawerMenu;
-    private int mDrawerSelectedIdentifier = 0;
+    private int mDrawerSelectedIdentifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,6 @@ public class MainActivity extends ActivityBase implements Drawer.OnDrawerItemCli
     @Override
     protected void onStart() {
         super.onStart();
-        mDrawerMenu.setSelection(1, true);
     }
 
     private List<IDrawerItem> SetUpDrawerItems() {
@@ -122,6 +122,8 @@ public class MainActivity extends ActivityBase implements Drawer.OnDrawerItemCli
                 .withOnDrawerItemClickListener(this)
                 .withDelayDrawerClickEvent(450)
                 .build();
+
+        mDrawerMenu.setSelection(1, true);
     }
 
     @Override
@@ -131,31 +133,42 @@ public class MainActivity extends ActivityBase implements Drawer.OnDrawerItemCli
 
             switch (((int) drawerItem.getIdentifier())) {
                 case 1:
-                    fragment = UserListFragment.newInstance();
+                    fragment = getSupportFragmentManager().findFragmentByTag(UserListFragment.class.getName());
+                    if (!UserListFragment.class.isInstance(fragment)) fragment = UserListFragment.newInstance();
                     break;
+
                 case 2:
-                    fragment = UserDetailFragment.newInstance();
+                    fragment = getSupportFragmentManager().findFragmentByTag(UserDetailFragment.class.getName());
+                    if (!UserDetailFragment.class.isInstance(fragment)) fragment = UserDetailFragment.newInstance();
                     break;
+
                 case 3:
-                    fragment = EmptyFragment.newInstance();
+                    fragment = getSupportFragmentManager().findFragmentByTag(EmptyFragment.class.getName());
+                    if (!EmptyFragment.class.isInstance(fragment)) fragment = EmptyFragment.newInstance();
                     break;
+
                 case 4:
                     logoutUser();
+                    break;
+
                 default:
                     break;
             }
-            loadFragmentFromMenu(fragment);
-            mDrawerSelectedIdentifier = (int) drawerItem.getIdentifier();
-        } else mDrawerMenu.closeDrawer();
-        return false;
-    }
 
-    private void loadFragmentFromMenu(Fragment fragment) {
-        String backStateName = fragment.getClass().getName();
-        boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate(backStateName, 0);
-        if (!fragmentPopped) {
-            replaceFragment(fragment, fragment.getClass().getName(), Animation.FADE, true);
+            // If the transaction fail (because isOnBackground), the menu drawer not change the position selected by the user.
+            if (fragment != null) {
+                boolean successTransaction = replaceFragmentTransaction(fragment, Animation.FADE, true, getSupportFragmentManager());
+                if (successTransaction) {
+                    mDrawerSelectedIdentifier = (int) drawerItem.getIdentifier();
+                } else {
+                    mDrawerMenu.setSelection(mDrawerSelectedIdentifier, false);
+                }
+            }
+
+        } else {
+            mDrawerMenu.closeDrawer();
         }
+        return false;
     }
 
     private void logoutUser() {
@@ -173,9 +186,10 @@ public class MainActivity extends ActivityBase implements Drawer.OnDrawerItemCli
             if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
                 finish();
             } else {
-                getSupportFragmentManager().popBackStack(0, 0);
-                mDrawerSelectedIdentifier = 1;
-                mDrawerMenu.setSelection(1, false);
+                // Empty all backstack and fragments references and Create initial fragment again
+                FragmentManager.BackStackEntry first = getSupportFragmentManager().getBackStackEntryAt(0);
+                getSupportFragmentManager().popBackStackImmediate(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                mDrawerMenu.setSelection(1, true);
             }
         }
     }

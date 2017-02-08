@@ -5,10 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import cl.mzapatae.mobileApp.R;
-import cl.mzapatae.mobileApp.base.ActivityBase;
+import cl.mzapatae.mobileApp.base.BaseActivity;
 import cl.mzapatae.mobileApp.fragments.WelcomeFragment;
 
-public class LandingActivity extends ActivityBase {
+public class LandingActivity extends BaseActivity {
     private static final String TAG = "Landing Screen";
 
     @Override

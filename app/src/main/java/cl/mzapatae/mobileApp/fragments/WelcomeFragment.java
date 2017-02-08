@@ -12,13 +12,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cl.mzapatae.mobileApp.R;
-import cl.mzapatae.mobileApp.base.FragmentBase;
+import cl.mzapatae.mobileApp.base.BaseFragment;
 import cl.mzapatae.mobileApp.enums.Animation;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WelcomeFragment extends FragmentBase {
+public class WelcomeFragment extends BaseFragment {
     private static final String TAG = "Welcome FRG";
 
     @BindView(R.id.button_login) Button mButtonLogin;

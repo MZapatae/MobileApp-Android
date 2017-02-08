@@ -3,6 +3,7 @@ package cl.mzapatae.mobileApp.base;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
+import android.util.Log;
 
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
@@ -13,7 +14,8 @@ import cl.mzapatae.mobileApp.utils.LocalStorage;
  * E-mail: miguel.zapatae@gmail.com
  */
 
-public class ApplicationBase extends Application {
+public class BaseApplication extends Application {
+    private static final String TAG = "Base Application";
     private static boolean sActivityVisible;
 
     @Override

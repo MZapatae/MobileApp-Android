@@ -10,14 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cl.mzapatae.mobileApp.R;
-import cl.mzapatae.mobileApp.base.FragmentBase;
+import cl.mzapatae.mobileApp.base.BaseFragment;
 
 
 /**
  * Only for Development or Test Concepts.
  * TODO: Delete in Productions Releases
  */
-public class EmptyFragment extends FragmentBase {
+public class EmptyFragment extends BaseFragment {
     private static final String TAG = "Test Fragment";
     private Context mContext;
 

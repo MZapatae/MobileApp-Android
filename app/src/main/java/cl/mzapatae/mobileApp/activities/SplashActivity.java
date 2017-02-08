@@ -3,13 +3,13 @@ package cl.mzapatae.mobileApp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 
 import cl.mzapatae.mobileApp.R;
+import cl.mzapatae.mobileApp.base.BaseActivity;
 import cl.mzapatae.mobileApp.utils.DeviceInfo;
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

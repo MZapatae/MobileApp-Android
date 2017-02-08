@@ -17,7 +17,7 @@ import cl.mzapatae.mobileApp.enums.Animation;
  * E-mail: miguel.zapatae@gmail.com
  */
 
-public class FragmentBase extends Fragment {
+public class BaseFragment extends Fragment {
 
     public void replaceFragment(Fragment fragment, String tag, Animation animation, boolean addBackstack) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
