@@ -30,6 +30,7 @@ import cl.mzapatae.mobileApp.enums.Animation;
 import cl.mzapatae.mobileApp.fragments.EmptyFragment;
 import cl.mzapatae.mobileApp.fragments.UserDetailFragment;
 import cl.mzapatae.mobileApp.fragments.UserListFragment;
+import cl.mzapatae.mobileApp.utils.FragmentUtils;
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
 public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener {
@@ -157,7 +158,7 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
 
             // If the transaction fail (because isOnBackground), the menu drawer not change the position selected by the user.
             if (fragment != null) {
-                boolean successTransaction = replaceFragmentTransaction(fragment, Animation.FADE, true, getSupportFragmentManager());
+                boolean successTransaction = FragmentUtils.replaceTransaction(getSupportFragmentManager(), fragment, Animation.FADE, true);
                 if (successTransaction) {
                     mDrawerSelectedIdentifier = (int) drawerItem.getIdentifier();
                 } else {

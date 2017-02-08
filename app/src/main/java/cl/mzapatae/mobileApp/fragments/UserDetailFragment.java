@@ -9,12 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cl.mzapatae.mobileApp.R;
-import cl.mzapatae.mobileApp.base.FragmentBase;
+import cl.mzapatae.mobileApp.base.BaseFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UserDetailFragment extends FragmentBase {
+public class UserDetailFragment extends BaseFragment {
     private static final String TAG = "UserDetail Fragment";
     private Context mContext;
 

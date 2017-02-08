@@ -14,6 +14,7 @@ import butterknife.OnClick;
 import cl.mzapatae.mobileApp.R;
 import cl.mzapatae.mobileApp.base.BaseFragment;
 import cl.mzapatae.mobileApp.enums.Animation;
+import cl.mzapatae.mobileApp.utils.FragmentUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,11 +57,11 @@ public class WelcomeFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.button_login:
                 fragment = LoginFragment.newInstance();
-                replaceFragment(fragment, "loginFragment", Animation.FADE, true);
+                FragmentUtils.replaceTransaction(getFragmentManager(), fragment, Animation.FADE, true);
                 break;
             case R.id.button_signup:
                 fragment = RegisterFragment.newInstance();
-                replaceFragment(fragment, "registerFragmewnt", Animation.SLIDE_TO_RIGHT, true);
+                FragmentUtils.replaceTransaction(getFragmentManager(), fragment, Animation.FADE, true);
                 break;
         }
     }

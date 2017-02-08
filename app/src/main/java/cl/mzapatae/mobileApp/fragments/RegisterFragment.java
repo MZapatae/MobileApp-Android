@@ -21,6 +21,7 @@ import cl.mzapatae.mobileApp.R;
 import cl.mzapatae.mobileApp.activities.MainActivity;
 import cl.mzapatae.mobileApp.apiclient.RestServices;
 import cl.mzapatae.mobileApp.apiclient.RetrofitClient;
+import cl.mzapatae.mobileApp.base.BaseFragment;
 import cl.mzapatae.mobileApp.datamodel.gson.AuthRegisterResponse;
 import cl.mzapatae.mobileApp.datamodel.objects.APIError;
 import cl.mzapatae.mobileApp.utils.DialogManager;
@@ -32,7 +33,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends BaseFragment {
     private static final String TAG = "MobileApp - Register";
 
     @BindView(R.id.text_title) TextView mTextTitle;

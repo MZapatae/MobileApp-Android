@@ -3,7 +3,6 @@ package cl.mzapatae.mobileApp.base;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
-import android.util.Log;
 
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
