@@ -4,11 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -24,24 +31,34 @@ import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cl.mzapatae.mobileApp.R;
 import cl.mzapatae.mobileApp.base.BaseActivity;
+import cl.mzapatae.mobileApp.base.BaseFragment;
 import cl.mzapatae.mobileApp.enums.Animation;
 import cl.mzapatae.mobileApp.fragments.EmptyFragment;
 import cl.mzapatae.mobileApp.fragments.UserDetailFragment;
 import cl.mzapatae.mobileApp.fragments.UserListFragment;
+import cl.mzapatae.mobileApp.transitions.FragmentMenuTransitions;
 import cl.mzapatae.mobileApp.utils.FragmentUtils;
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
-public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener {
+public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener, BaseFragment.OnFragmentLoadedListener {
     private static final String TAG = "Main Activity";
+
+    @BindView(R.id.fragment_container) FrameLayout fragmentContainer;
+
     private Drawer mDrawerMenu;
     private int mDrawerSelectedIdentifier;
+    private Toolbar mToolbar;
+    private ConstraintLayout mConstraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         createDrawerMenu(SetUpDrawerItems());
     }
 
@@ -94,9 +111,9 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
         });
 
         ProfileDrawerItem userProfile = new ProfileDrawerItem()
-                    .withName(LocalStorage.getPrefUserFirstname() + " " + LocalStorage.getPrefUserLastname())
-                    .withEmail(LocalStorage.getPrefUserEmail())
-                    .withIcon(LocalStorage.getPrefUserAvatar());
+                .withName(LocalStorage.getPrefUserFirstname() + " " + LocalStorage.getPrefUserLastname())
+                .withEmail(LocalStorage.getPrefUserEmail())
+                .withIcon(LocalStorage.getPrefUserAvatar());
 
         AccountHeader headerMenu = new AccountHeaderBuilder()
                 .withActivity(this)
@@ -131,41 +148,54 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
         if (drawerItem.getIdentifier() != mDrawerSelectedIdentifier) {
             Fragment fragment = null;
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             switch (((int) drawerItem.getIdentifier())) {
                 case 1:
                     fragment = getSupportFragmentManager().findFragmentByTag(UserListFragment.class.getName());
-                    if (!UserListFragment.class.isInstance(fragment)) fragment = UserListFragment.newInstance();
+                    if (!UserListFragment.class.isInstance(fragment))
+                        fragment = UserListFragment.newInstance();
                     break;
 
                 case 2:
                     fragment = getSupportFragmentManager().findFragmentByTag(UserDetailFragment.class.getName());
-                    if (!UserDetailFragment.class.isInstance(fragment)) fragment = UserDetailFragment.newInstance();
+                    if (!UserDetailFragment.class.isInstance(fragment))
+                        fragment = UserDetailFragment.newInstance();
                     break;
 
                 case 3:
                     fragment = getSupportFragmentManager().findFragmentByTag(EmptyFragment.class.getName());
-                    if (!EmptyFragment.class.isInstance(fragment)) fragment = EmptyFragment.newInstance();
+                    if (!EmptyFragment.class.isInstance(fragment))
+                        fragment = EmptyFragment.newInstance();
                     break;
 
                 case 4:
                     logoutUser();
                     break;
-
-                default:
-                    break;
             }
 
-            // If the transaction fail (because isOnBackground), the menu drawer not change the position selected by the user.
-            if (fragment != null) {
-                boolean successTransaction = FragmentUtils.replaceTransaction(getSupportFragmentManager(), fragment, Animation.FADE, true);
-                if (successTransaction) {
+            try {
+                if (fragment != null) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        fragment.setSharedElementEnterTransition(new FragmentMenuTransitions());
+                        fragment.setSharedElementReturnTransition(new FragmentMenuTransitions());
+                    }
+
+                    if (mToolbar != null)
+                        transaction.addSharedElement(mToolbar, "ToolbarTransition");
+                    if (mConstraintLayout != null)
+                        transaction.addSharedElement(mConstraintLayout, "ContraintLayoutTransition");
+
+                    transaction.replace(R.id.fragment_container, fragment, fragment.getClass().getName());
+                    transaction.addToBackStack(fragment.getClass().getName());
+                    transaction.commit();
+
                     mDrawerSelectedIdentifier = (int) drawerItem.getIdentifier();
-                } else {
-                    mDrawerMenu.setSelection(mDrawerSelectedIdentifier, false);
                 }
+            }catch(Exception e){
+                Log.e(TAG, "Exception: " + e.getMessage());
+                mDrawerMenu.setSelection(mDrawerSelectedIdentifier, false);
             }
-
         } else {
             mDrawerMenu.closeDrawer();
         }
@@ -189,9 +219,21 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
             } else {
                 // Empty all backstack and fragments references and Create initial fragment again
                 FragmentManager.BackStackEntry first = getSupportFragmentManager().getBackStackEntryAt(0);
-                getSupportFragmentManager().popBackStackImmediate(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                mDrawerMenu.setSelection(1, true);
+                getSupportFragmentManager().popBackStackImmediate(first.getId(), 0);
+                mDrawerSelectedIdentifier = 1;
+                mDrawerMenu.setSelection(1, false);
             }
         }
+    }
+
+    @Override
+    public void onToolbarViewLoaded(Toolbar toolbar) {
+        mToolbar = toolbar;
+        mDrawerMenu.setToolbar(this, toolbar, true);
+    }
+
+    @Override
+    public void onConstraintLayoutLoaded(ConstraintLayout constraintLayout) {
+        mConstraintLayout = constraintLayout;
     }
 }

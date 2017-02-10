@@ -13,4 +13,14 @@
         <item name="colorPrimaryDark">@color/app.primary.dark</item>
     </style>
 
+    <style name="AppTheme.Toolbar" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:textColorPrimary">@color/font.light.primary</item>
+        <item name="actionMenuTextColor">@color/font.light.primary</item>
+        <item name="android:textColorSecondary">@color/font.light.primary</item>
+    </style>
+    <style name="AppTheme.Toolbar.OverlayMenu" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/app.primary</item>
+        <item name="android:textColor">@color/font.light.primary</item>
+    </style>
+
 </resources>

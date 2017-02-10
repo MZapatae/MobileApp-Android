@@ -1,6 +1,9 @@
 package cl.mzapatae.mobileApp.base;
 
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 /**
  * Base fragment created to be extended by every fragment in this application. This class provides
@@ -15,6 +18,11 @@ import android.support.v4.app.Fragment;
 
 public class BaseFragment extends Fragment {
     private static final String TAG = "Base Fragment";
+
+    public interface OnFragmentLoadedListener {
+        void onToolbarViewLoaded(Toolbar toolbar);
+        void onConstraintLayoutLoaded(ConstraintLayout constraintLayout);
+    }
 
 
 
