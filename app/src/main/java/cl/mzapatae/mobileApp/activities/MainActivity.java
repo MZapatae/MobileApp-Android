@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -36,15 +35,13 @@ import butterknife.ButterKnife;
 import cl.mzapatae.mobileApp.R;
 import cl.mzapatae.mobileApp.base.BaseActivity;
 import cl.mzapatae.mobileApp.base.BaseFragment;
-import cl.mzapatae.mobileApp.enums.Animation;
 import cl.mzapatae.mobileApp.fragments.EmptyFragment;
 import cl.mzapatae.mobileApp.fragments.UserDetailFragment;
 import cl.mzapatae.mobileApp.fragments.UserListFragment;
-import cl.mzapatae.mobileApp.transitions.FragmentMenuTransitions;
-import cl.mzapatae.mobileApp.utils.FragmentUtils;
+import cl.mzapatae.mobileApp.transitions.FragmentsDrawerTransitionSet;
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
-public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener, BaseFragment.OnFragmentLoadedListener {
+public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener, BaseFragment.OnViewsCreatedListener {
     private static final String TAG = "Main Activity";
 
     @BindView(R.id.fragment_container) FrameLayout fragmentContainer;
@@ -177,14 +174,14 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
             try {
                 if (fragment != null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        fragment.setSharedElementEnterTransition(new FragmentMenuTransitions());
-                        fragment.setSharedElementReturnTransition(new FragmentMenuTransitions());
-                    }
+                        fragment.setSharedElementEnterTransition(new FragmentsDrawerTransitionSet());
+                        fragment.setSharedElementReturnTransition(new FragmentsDrawerTransitionSet());
 
-                    if (mToolbar != null)
-                        transaction.addSharedElement(mToolbar, "ToolbarTransition");
-                    if (mConstraintLayout != null)
-                        transaction.addSharedElement(mConstraintLayout, "ContraintLayoutTransition");
+                        if (mToolbar != null)
+                            transaction.addSharedElement(mToolbar, "ToolbarTransition");
+                        if (mConstraintLayout != null)
+                            transaction.addSharedElement(mConstraintLayout, "ContraintLayoutTransition");
+                    }
 
                     transaction.replace(R.id.fragment_container, fragment, fragment.getClass().getName());
                     transaction.addToBackStack(fragment.getClass().getName());

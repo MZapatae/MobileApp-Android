@@ -4,6 +4,7 @@
         <item name="colorPrimary">@color/app.primary</item>
         <item name="colorPrimaryDark">@color/app.primary.dark</item>
         <item name="colorAccent">@color/app.accent</item>
+        <item name="android:navigationBarColor">@color/app.primary.dark</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">

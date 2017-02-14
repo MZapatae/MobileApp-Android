@@ -1,14 +1,12 @@
 package cl.mzapatae.mobileApp.base;
 
+import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.widget.TextView;
 
 /**
- * Base fragment created to be extended by every fragment in this application. This class provides
- * fragments transaction and some methods
- * common to every fragment.
+ * Base fragment created to be extended for fragments loaded with DrawerMenu
  *
  * @author Miguel A. Zapata - MZapatae
  * @version 1.0
@@ -19,13 +17,16 @@ import android.widget.TextView;
 public class BaseFragment extends Fragment {
     private static final String TAG = "Base Fragment";
 
-    public interface OnFragmentLoadedListener {
+    public interface OnViewsCreatedListener {
         void onToolbarViewLoaded(Toolbar toolbar);
         void onConstraintLayoutLoaded(ConstraintLayout constraintLayout);
     }
 
-
-
-
-
+    protected OnViewsCreatedListener setOnViewsCreatedListener(Context context) {
+        try {
+            return (OnViewsCreatedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnViewsCreatedListener");
+        }
+    }
 }

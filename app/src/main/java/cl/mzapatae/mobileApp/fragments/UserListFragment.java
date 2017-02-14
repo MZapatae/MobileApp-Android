@@ -4,7 +4,6 @@ package cl.mzapatae.mobileApp.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,7 @@ import cl.mzapatae.mobileApp.R;
 import cl.mzapatae.mobileApp.base.BaseFragment;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple {@link BaseFragment} subclass.
  */
 public class UserListFragment extends BaseFragment {
     private static final String TAG = "UserList Fragment";
@@ -25,16 +24,12 @@ public class UserListFragment extends BaseFragment {
     @BindView(R.id.constraintLayout) ConstraintLayout mConstraintLayout;
 
     private Context mContext;
-    private OnFragmentLoadedListener mOnFragmentLoadedListener;
+    private OnViewsCreatedListener mOnViewsCreatedListener;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        try {
-            mOnFragmentLoadedListener = (OnFragmentLoadedListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnFragmentLoadedListener");
-        }
+        mOnViewsCreatedListener = setOnViewsCreatedListener(context);
     }
 
     public UserListFragment() {
@@ -61,7 +56,7 @@ public class UserListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mOnFragmentLoadedListener.onToolbarViewLoaded(mToolbar);
-        mOnFragmentLoadedListener.onConstraintLayoutLoaded(mConstraintLayout);
+        mOnViewsCreatedListener.onToolbarViewLoaded(mToolbar);
+        mOnViewsCreatedListener.onConstraintLayoutLoaded(mConstraintLayout);
     }
 }

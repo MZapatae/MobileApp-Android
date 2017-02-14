@@ -15,6 +15,7 @@ import cl.mzapatae.mobileApp.R;
 import cl.mzapatae.mobileApp.base.BaseFragment;
 
 /**
+ * A simple {@link BaseFragment} subclass.
  */
 public class UserDetailFragment extends BaseFragment {
     private static final String TAG = "UserDetail Fragment";
@@ -23,16 +24,12 @@ public class UserDetailFragment extends BaseFragment {
     @BindView(R.id.constraintLayout) ConstraintLayout mConstraintLayout;
 
     private Context mContext;
-    private OnFragmentLoadedListener mOnFragmentLoadedListener;
+    private OnViewsCreatedListener mOnViewsCreatedListener;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        try {
-            mOnFragmentLoadedListener = (OnFragmentLoadedListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnFragmentLoadedListener");
-        }
+        mOnViewsCreatedListener = setOnViewsCreatedListener(context);
     }
 
     public UserDetailFragment() {
@@ -54,13 +51,12 @@ public class UserDetailFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_user_detail, container, false);
         ButterKnife.bind(this, view);
         return view;
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mOnFragmentLoadedListener.onToolbarViewLoaded(mToolbar);
-        mOnFragmentLoadedListener.onConstraintLayoutLoaded(mConstraintLayout);
+        mOnViewsCreatedListener.onToolbarViewLoaded(mToolbar);
+        mOnViewsCreatedListener.onConstraintLayoutLoaded(mConstraintLayout);
     }
 }

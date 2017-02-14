@@ -6,17 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:background="#234358"
+    android:background="@color/app.primary"
     android:transitionName="ContraintLayoutTransition"
     tools:context="cl.mzapatae.mobileApp.fragments.UserListFragment">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
+        android:background="@color/app.primary.dark"
         android:transitionName="ToolbarTransition"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_alignParentTop="true"
-        android:background="@color/app.primary.dark"
         android:elevation="10dip"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/AppTheme.Toolbar"
