@@ -30,4 +30,9 @@
     <string name="error_user_exists">Este correo ya se encuentra registrado</string>
     <string name="error_user_not_exists">Este correo no se encuentra registrado</string>
 
+    <!-- itemlist_user.xml -->
+    <string name="itemlist_name">Nombre: %1$s</string>
+    <string name="itemlist_email">Email: %1$s</string>
+
+
 </resources>

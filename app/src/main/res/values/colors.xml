@@ -5,9 +5,12 @@
     <color name="app.primary">#017978</color>
     <color name="app.primary.dark">#005454</color>
     <color name="app.accent">#339393</color>
-    <color name="app.background">#DEDEDE</color>
+    <color name="app.background">#005454</color>
 
     <!-- Font Color -->
     <color name="font.light.primary">#ffffff</color>
+
+    <color name="app.itemlist.background">#ffffff</color>
+
 
 </resources>
