@@ -13,6 +13,8 @@
 
     <string name="dialog_title_alert">Atencion</string>
     <string name="dialog_title_error">Error</string>
+    <string name="dialog_title_loading">Por favor, espere…</string>
+    <string name="dialog_message_loading">Cargando contenido</string>
     <string name="dialog_button_accept">Aceptar</string>
 
     <string name="button_login">Ingresar</string>
@@ -27,12 +29,5 @@
     <string name="error_weak_password">Password demasiado debil</string>
     <string name="error_user_exists">Este correo ya se encuentra registrado</string>
     <string name="error_user_not_exists">Este correo no se encuentra registrado</string>
-
-    <!-- API Generic Error -->
-    <string name="error_http_500">Error 500: Problema interno de Servidor</string>
-    <string name="error_json_syntax">Response: Bad Syntax</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

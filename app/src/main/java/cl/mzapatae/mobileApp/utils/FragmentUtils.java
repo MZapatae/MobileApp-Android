@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.View;
 
 import cl.mzapatae.mobileApp.R;
 import cl.mzapatae.mobileApp.enums.Animation;
@@ -34,6 +33,8 @@ public class FragmentUtils {
      * @param manager: Fragmentmanager for actual context
      * @return true: if the transaction is commited, false: if transaction is not commited because the app is in background
      */
+
+
     public static boolean replaceTransaction(FragmentManager manager, Fragment fragment, Animation animation, boolean addBackstack) {
         try {
             FragmentTransaction transaction = manager.beginTransaction();

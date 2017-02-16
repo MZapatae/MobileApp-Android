@@ -1,7 +1,6 @@
 package cl.mzapatae.mobileApp.base;
 
 import android.content.Context;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 
@@ -17,16 +16,15 @@ import android.support.v7.widget.Toolbar;
 public class BaseFragment extends Fragment {
     private static final String TAG = "Base Fragment";
 
-    public interface OnViewsCreatedListener {
-        void onToolbarViewLoaded(Toolbar toolbar);
-        void onConstraintLayoutLoaded(ConstraintLayout constraintLayout);
+    public interface OnToolbarAddedListener {
+        void onToolbarAdded(Toolbar toolbar);
     }
 
-    protected OnViewsCreatedListener setOnViewsCreatedListener(Context context) {
+    protected OnToolbarAddedListener setOnViewsCreatedListener(Context context) {
         try {
-            return (OnViewsCreatedListener) context;
+            return (OnToolbarAddedListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnViewsCreatedListener");
+            throw new ClassCastException(context.toString() + " must implement OnToolbarAddedListener");
         }
     }
 }

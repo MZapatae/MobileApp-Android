@@ -6,7 +6,6 @@ import android.transition.ChangeBounds;
 import android.transition.ChangeClipBounds;
 import android.transition.ChangeTransform;
 import android.transition.TransitionSet;
-import android.view.animation.LinearInterpolator;
 
 import cl.mzapatae.mobileApp.R;
 
@@ -30,8 +29,11 @@ public class FragmentsDrawerTransitionSet extends TransitionSet {
         ChangeClipBounds changeClipBounds = new ChangeClipBounds();
         ChangeTransform changeTransform = new ChangeTransform();
 
-        addTransition(changeBounds).addTransition(changeTransform).addTransition(changeClipBounds).addTransition(changeColor).addTarget(R.id.toolbar);
-        addTransition(changeColor).addTarget(R.id.constraintLayout);
+        addTransition(changeBounds)
+                .addTransition(changeTransform)
+                .addTransition(changeClipBounds)
+                .addTransition(changeColor)
+                .addTarget(R.id.toolbar);
     }
 
 

@@ -41,15 +41,13 @@ import cl.mzapatae.mobileApp.fragments.UserListFragment;
 import cl.mzapatae.mobileApp.transitions.FragmentsDrawerTransitionSet;
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
-public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener, BaseFragment.OnViewsCreatedListener {
+public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener, BaseFragment.OnToolbarAddedListener {
     private static final String TAG = "Main Activity";
-
     @BindView(R.id.fragment_container) FrameLayout fragmentContainer;
 
     private Drawer mDrawerMenu;
     private int mDrawerSelectedIdentifier;
     private Toolbar mToolbar;
-    private ConstraintLayout mConstraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +133,6 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
                 .withCloseOnClick(true)
                 .withSelectedItem(1)
                 .withOnDrawerItemClickListener(this)
-                .withDelayDrawerClickEvent(450)
                 .build();
 
         mDrawerMenu.setSelection(1, true);
@@ -179,8 +176,6 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
 
                         if (mToolbar != null)
                             transaction.addSharedElement(mToolbar, "ToolbarTransition");
-                        if (mConstraintLayout != null)
-                            transaction.addSharedElement(mConstraintLayout, "ContraintLayoutTransition");
                     }
 
                     transaction.replace(R.id.fragment_container, fragment, fragment.getClass().getName());
@@ -224,13 +219,8 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
     }
 
     @Override
-    public void onToolbarViewLoaded(Toolbar toolbar) {
+    public void onToolbarAdded(Toolbar toolbar) {
         mToolbar = toolbar;
         mDrawerMenu.setToolbar(this, toolbar, true);
-    }
-
-    @Override
-    public void onConstraintLayoutLoaded(ConstraintLayout constraintLayout) {
-        mConstraintLayout = constraintLayout;
     }
 }

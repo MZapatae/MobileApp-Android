@@ -4,6 +4,7 @@ package cl.mzapatae.mobileApp.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -14,12 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cl.mzapatae.mobileApp.R;
 import cl.mzapatae.mobileApp.activities.MainActivity;
 import cl.mzapatae.mobileApp.apiclient.RestServices;
+import cl.mzapatae.mobileApp.apiclient.RetrofitCallback;
 import cl.mzapatae.mobileApp.apiclient.RetrofitClient;
 import cl.mzapatae.mobileApp.base.BaseFragment;
 import cl.mzapatae.mobileApp.datamodel.gson.AuthLoginResponse;
@@ -36,12 +40,11 @@ import retrofit2.Response;
  */
 public class LoginFragment extends BaseFragment {
     private static final String TAG = "Login Fragment";
-
-    @BindView(R.id.edit_email) TextInputEditText mEditEmail;
-    @BindView(R.id.edit_password) TextInputEditText mEditPassword;
+    @BindView(R.id.editText_email) TextInputEditText mEditTextEmail;
+    @BindView(R.id.editText_password) TextInputEditText mEditTextPassword;
     @BindView(R.id.button_login) Button mButtonLogin;
-    @BindView(R.id.edit_layout_email) TextInputLayout mEditLayoutEmail;
-    @BindView(R.id.edit_layout_password) TextInputLayout mEditLayoutPassword;
+    @BindView(R.id.inputLayout_email) TextInputLayout mInputLayoutEmail;
+    @BindView(R.id.inputLayout_password) TextInputLayout mInputLayoutPassword;
 
     private Context mContext;
     private String mUserUID = null;
@@ -92,43 +95,43 @@ public class LoginFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.button_login:
                 if (isLoginValid()) {
-                    signInUser(mEditEmail.getText().toString(), mEditPassword.getText().toString());
+                    signInUser(mEditTextEmail.getText().toString(), mEditTextPassword.getText().toString());
                 }
                 break;
         }
     }
 
     private boolean isLoginValid() {
-        String emailValue = mEditEmail.getText().toString().trim();
-        String passwordValue = mEditPassword.getText().toString().trim();
+        String emailValue = mEditTextEmail.getText().toString().trim();
+        String passwordValue = mEditTextPassword.getText().toString().trim();
 
-        mEditEmail.setText(emailValue);
-        mEditPassword.setText(passwordValue);
+        mEditTextEmail.setText(emailValue);
+        mEditTextPassword.setText(passwordValue);
 
         Log.d(TAG, "Validate Email: " + emailValue);
         if (!FormValidator.isValidEmail(emailValue)) {
-            mEditLayoutEmail.setError(getString(R.string.error_invalid_email));
-            mEditLayoutEmail.requestFocus();
-            mEditEmail.setSelection(emailValue.length());
+            mInputLayoutEmail.setError(getString(R.string.error_invalid_email));
+            mInputLayoutEmail.requestFocus();
+            mEditTextEmail.setSelection(emailValue.length());
             Log.d(TAG, "Validation: Fail!");
             Log.i(TAG, "Login Form is Invalid!");
             return false;
         } else {
             Log.d(TAG, "Validation: Success!");
-            mEditLayoutEmail.setErrorEnabled(false);
+            mInputLayoutEmail.setErrorEnabled(false);
         }
 
         Log.d(TAG, "Validate Password: ********");
         if (!FormValidator.isValidPassword(passwordValue)) {
-            mEditLayoutPassword.setError(getString(R.string.error_invalid_password));
-            mEditLayoutEmail.requestFocus();
-            mEditPassword.setSelection(passwordValue.length());
+            mInputLayoutPassword.setError(getString(R.string.error_invalid_password));
+            mInputLayoutEmail.requestFocus();
+            mEditTextPassword.setSelection(passwordValue.length());
             Log.d(TAG, "Validation: Fail!");
             Log.i(TAG, "Login Form is Invalid!");
             return false;
         } else {
             Log.d(TAG, "Validation: Success!");
-            mEditLayoutPassword.setErrorEnabled(false);
+            mInputLayoutPassword.setErrorEnabled(false);
         }
         Log.i(TAG, "Login Form is Valid!");
         return true;
@@ -136,51 +139,64 @@ public class LoginFragment extends BaseFragment {
 
     private void signInUser(String email, String password) {
         try {
+            final MaterialDialog loadingDialog = DialogManager.createLoadingDialog(getActivity()).build();
+            final Handler runLoadingIndicator = new Handler();
+            final Runnable showLoadingIndicator = new Runnable() {
+                @Override
+                public void run() {
+                    loadingDialog.show();
+                }
+            };
+
             Crypt crypt = new Crypt();
             String encryptedPass = Base64.encodeToString(crypt.encrypt(password), Base64.NO_WRAP);
 
             RestServices restServices = RetrofitClient.setAuthConnection(RestServices.class, email, encryptedPass);
             Call<AuthLoginResponse> call = restServices.loginUser(null);
-            call.enqueue(new retrofit2.Callback<AuthLoginResponse>() {
+            call.enqueue(new RetrofitCallback<AuthLoginResponse>() {
 
                 @Override
-                public void onResponse(Call<AuthLoginResponse> call, Response<AuthLoginResponse> response) {
-                    try {
-                        if (response.isSuccessful()) {
-                            //TODO: Fill with data user retorned by service
-                            LocalStorage.loginUser(
-                                    "0011",
-                                    mEditEmail.getText().toString(),
-                                    "Nombre",
-                                    "Apellido",
-                                    "Apodo",
-                                    "",
-                                    "EmailProvider",
-                                    response.body().getResponse().getTokenUser()
-                            );
-
-                            Intent intent = new Intent().setClass(mContext, MainActivity.class);
-                            startActivity(intent);
-                            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                            getActivity().finishAffinity();
-
-                        } else {
-                            APIError error = RetrofitClient.parseHttpError(response);
-                            DialogManager.showSimpleAlert(mContext, RetrofitClient.buildErrorMessage(error));
-                        }
-                    } catch (Exception e) {
-                        DialogManager.showSimpleAlert(mContext, R.string.error_json_syntax);
-                    }
+                public void onStart() {
+                    runLoadingIndicator.postDelayed(showLoadingIndicator, 600);
                 }
 
                 @Override
-                public void onFailure(Call<AuthLoginResponse> call, Throwable t) {
-                    Log.e(TAG, t.getMessage());
-                    DialogManager.showSimpleAlert(mContext, t.getMessage());
+                public void onFinish() {
+                    runLoadingIndicator.removeCallbacks(showLoadingIndicator);
+                    if (loadingDialog.isShowing()) loadingDialog.dismiss();
+                }
+
+                @Override
+                public void onSuccess(Call<AuthLoginResponse> call, Response<AuthLoginResponse> response) {
+                    LocalStorage.loginUser(
+                            "0011",
+                            mEditTextEmail.getText().toString(),
+                            "Nombre",
+                            "Apellido",
+                            "Apodo",
+                            "",
+                            "EmailProvider",
+                            response.body().getResponse().getTokenUser()
+                    );
+
+                    Intent intent = new Intent().setClass(mContext, MainActivity.class);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    getActivity().finishAffinity();
+                }
+
+                @Override
+                public void onFailure(Call<AuthLoginResponse> call, APIError error) {
+                    DialogManager.createErrorDialog(mContext, RetrofitClient.buildErrorMessage(error));
+                }
+
+                @Override
+                public void onError(Call<AuthLoginResponse> call, Throwable t) {
+                    DialogManager.createErrorDialog(mContext, t.getMessage());
                 }
             });
         } catch (Exception e) {
-            DialogManager.showSimpleAlert(mContext, e.getMessage());
+            DialogManager.createErrorDialog(mContext, e.getMessage());
         }
     }
 }

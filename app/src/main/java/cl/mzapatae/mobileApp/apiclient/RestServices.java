@@ -2,9 +2,11 @@ package cl.mzapatae.mobileApp.apiclient;
 
 import cl.mzapatae.mobileApp.datamodel.gson.AuthLoginResponse;
 import cl.mzapatae.mobileApp.datamodel.gson.AuthRegisterResponse;
+import cl.mzapatae.mobileApp.datamodel.gson.CelmedianosResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 /**
@@ -39,4 +41,11 @@ public interface RestServices {
     Call<AuthLoginResponse> loginUser(
             @Field("dummy") String dummyParameter
     );
+
+    /**
+     * [GET] - Lista de Usuarios
+     * @return CelmedianosResponse: Respuesta que incluye una lista de usuarios registrados
+     */
+    @GET("public/celmedianos")
+    Call<CelmedianosResponse> getUserList();
 }

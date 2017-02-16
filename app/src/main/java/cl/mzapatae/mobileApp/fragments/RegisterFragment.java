@@ -4,6 +4,7 @@ package cl.mzapatae.mobileApp.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -14,12 +15,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cl.mzapatae.mobileApp.R;
 import cl.mzapatae.mobileApp.activities.MainActivity;
 import cl.mzapatae.mobileApp.apiclient.RestServices;
+import cl.mzapatae.mobileApp.apiclient.RetrofitCallback;
 import cl.mzapatae.mobileApp.apiclient.RetrofitClient;
 import cl.mzapatae.mobileApp.base.BaseFragment;
 import cl.mzapatae.mobileApp.datamodel.gson.AuthRegisterResponse;
@@ -35,19 +39,18 @@ import retrofit2.Response;
  */
 public class RegisterFragment extends BaseFragment {
     private static final String TAG = "MobileApp - Register";
-
     @BindView(R.id.text_title) TextView mTextTitle;
-    @BindView(R.id.edit_name) TextInputEditText mEditName;
-    @BindView(R.id.edit_lastname) TextInputEditText mEditLastname;
-    @BindView(R.id.edit_email) TextInputEditText mEditEmail;
-    @BindView(R.id.edit_username) TextInputEditText mEditUsername;
-    @BindView(R.id.edit_password) TextInputEditText mEditPassword;
+    @BindView(R.id.editText_name) TextInputEditText mEditTextName;
+    @BindView(R.id.editText_lastname) TextInputEditText mEditTextLastname;
+    @BindView(R.id.editText_email) TextInputEditText mEditTextEmail;
+    @BindView(R.id.editText_username) TextInputEditText mEditTextUsername;
+    @BindView(R.id.editText_password) TextInputEditText mEditTextPassword;
     @BindView(R.id.button_register) Button mButtonRegister;
-    @BindView(R.id.edit_layout_name) TextInputLayout mEditLayoutName;
-    @BindView(R.id.edit_layout_lastname) TextInputLayout mEditLayoutLastname;
-    @BindView(R.id.edit_layout_email) TextInputLayout mEditLayoutEmail;
-    @BindView(R.id.edit_layout_username) TextInputLayout mEditLayoutUsername;
-    @BindView(R.id.edit_layout_password) TextInputLayout mEditLayoutPassword;
+    @BindView(R.id.inputLayout_name) TextInputLayout mInputLayoutName;
+    @BindView(R.id.inputLayout_lastname) TextInputLayout mInputLayoutLastname;
+    @BindView(R.id.inputLayout_email) TextInputLayout mInputLayoutEmail;
+    @BindView(R.id.inputLayout_username) TextInputLayout mInputLayoutUsername;
+    @BindView(R.id.inputLayout_password) TextInputLayout mInputLayoutPassword;
 
     private Context mContext;
 
@@ -91,132 +94,145 @@ public class RegisterFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.button_register:
                 if (isRegisterValid()) {
-                    registerUser(mEditEmail.getText().toString(), mEditPassword.getText().toString());
+                    registerUser(mEditTextEmail.getText().toString(), mEditTextPassword.getText().toString());
                 }
                 break;
         }
     }
 
     private boolean isRegisterValid() {
-        String nameValue = mEditName.getText().toString().trim();
-        String lastnameValue = mEditLastname.getText().toString().trim();
-        String usernameValue = mEditUsername.getText().toString().trim();
-        String emailValue = mEditEmail.getText().toString().trim();
-        String passwordValue = mEditPassword.getText().toString().trim();
+        String nameValue = mEditTextName.getText().toString().trim();
+        String lastnameValue = mEditTextLastname.getText().toString().trim();
+        String usernameValue = mEditTextUsername.getText().toString().trim();
+        String emailValue = mEditTextEmail.getText().toString().trim();
+        String passwordValue = mEditTextPassword.getText().toString().trim();
 
-        mEditName.setText(nameValue);
-        mEditLastname.setText(lastnameValue);
-        mEditUsername.setText(usernameValue);
-        mEditEmail.setText(emailValue);
-        mEditPassword.setText(passwordValue);
+        mEditTextName.setText(nameValue);
+        mEditTextLastname.setText(lastnameValue);
+        mEditTextUsername.setText(usernameValue);
+        mEditTextEmail.setText(emailValue);
+        mEditTextPassword.setText(passwordValue);
 
         Log.d(TAG, "Validate Name: " + nameValue);
         if (!FormValidator.isValidName(nameValue)) {
-            mEditLayoutName.setError(getString(R.string.error_invalid_first_name));
-            mEditLayoutName.requestFocus();
-            mEditName.setSelection(nameValue.length());
+            mInputLayoutName.setError(getString(R.string.error_invalid_first_name));
+            mInputLayoutName.requestFocus();
+            mEditTextName.setSelection(nameValue.length());
             Log.d(TAG, "Validation: Fail!");
             Log.i(TAG, "Login Form is Invalid!");
             return false;
         } else {
             Log.d(TAG, "Validation: Success!");
-            mEditLayoutName.setErrorEnabled(false);
+            mInputLayoutName.setErrorEnabled(false);
         }
 
         Log.d(TAG, "Validate LastName: " + lastnameValue);
         if (!FormValidator.isValidLastName(lastnameValue)) {
-            mEditLayoutLastname.setError(getString(R.string.error_invalid_last_name));
-            mEditLayoutLastname.requestFocus();
-            mEditLastname.setSelection(lastnameValue.length());
+            mInputLayoutLastname.setError(getString(R.string.error_invalid_last_name));
+            mInputLayoutLastname.requestFocus();
+            mEditTextLastname.setSelection(lastnameValue.length());
             Log.d(TAG, "Validation: Fail!");
             Log.i(TAG, "Login Form is Invalid!");
             return false;
         } else {
             Log.d(TAG, "Validation: Success!");
-            mEditLayoutLastname.setErrorEnabled(false);
+            mInputLayoutLastname.setErrorEnabled(false);
         }
 
         Log.d(TAG, "Validate Username: " + usernameValue);
         if (!FormValidator.isValidUsername(usernameValue)) {
-            mEditLayoutUsername.setError(getString(R.string.error_invalid_user_name));
-            mEditLayoutUsername.requestFocus();
-            mEditUsername.setSelection(usernameValue.length());
+            mInputLayoutUsername.setError(getString(R.string.error_invalid_user_name));
+            mInputLayoutUsername.requestFocus();
+            mEditTextUsername.setSelection(usernameValue.length());
             Log.d(TAG, "Validation: Fail!");
             Log.i(TAG, "Login Form is Invalid!");
             return false;
         } else {
             Log.d(TAG, "Validation: Success!");
-            mEditLayoutUsername.setErrorEnabled(false);
+            mInputLayoutUsername.setErrorEnabled(false);
         }
 
         Log.d(TAG, "Validate Email: " + emailValue);
         if (!FormValidator.isValidEmail(emailValue)) {
-            mEditLayoutEmail.setError(getString(R.string.error_invalid_email));
-            mEditLayoutEmail.requestFocus();
-            mEditEmail.setSelection(emailValue.length());
+            mInputLayoutEmail.setError(getString(R.string.error_invalid_email));
+            mInputLayoutEmail.requestFocus();
+            mEditTextEmail.setSelection(emailValue.length());
             Log.d(TAG, "Validation: Fail!");
             Log.i(TAG, "Login Form is Invalid!");
             return false;
         } else {
             Log.d(TAG, "Validation: Success!");
-            mEditLayoutEmail.setErrorEnabled(false);
+            mInputLayoutEmail.setErrorEnabled(false);
         }
 
         Log.d(TAG, "Validate Password: ********");
         if (!FormValidator.isValidPassword(passwordValue)) {
-            mEditLayoutPassword.setError(getString(R.string.error_invalid_password));
-            mEditLayoutPassword.requestFocus();
-            mEditPassword.setSelection(passwordValue.length());
+            mInputLayoutPassword.setError(getString(R.string.error_invalid_password));
+            mInputLayoutPassword.requestFocus();
+            mEditTextPassword.setSelection(passwordValue.length());
             Log.d(TAG, "Validation: Fail!");
             Log.i(TAG, "Login Form is Invalid!");
             return false;
         } else {
             Log.d(TAG, "Validation: Success!");
-            mEditLayoutPassword.setErrorEnabled(false);
+            mInputLayoutPassword.setErrorEnabled(false);
         }
         Log.i(TAG, "Register Form is Valid!");
         return true;
     }
 
     private void registerUser(String email, String password) {
+        final MaterialDialog loadingDialog = DialogManager.createLoadingDialog(getActivity()).build();
+        final Handler runLoadingIndicator = new Handler();
+        final Runnable showLoadingIndicator = new Runnable() {
+            @Override
+            public void run() {
+                loadingDialog.show();
+            }
+        };
+
         RestServices restServices = RetrofitClient.setConnection(RestServices.class);
         Call<AuthRegisterResponse> call = restServices.registerUser(email, password);
-        call.enqueue(new retrofit2.Callback<AuthRegisterResponse>() {
+        call.enqueue(new RetrofitCallback<AuthRegisterResponse>() {
 
             @Override
-            public void onResponse(Call<AuthRegisterResponse> call, Response<AuthRegisterResponse> response) {
-                try {
-                    if (response.isSuccessful()) {
-                        //TODO: Add data POST to Register Service
-                        LocalStorage.loginUser(
-                                response.body().getResponse().getIdResource(),
-                                mEditEmail.getText().toString(),
-                                mEditName.getText().toString(),
-                                mEditLastname.getText().toString(),
-                                mEditUsername.getText().toString(),
-                                "",
-                                "EmailProvider",
-                                response.body().getResponse().getTokenUser()
-                                );
-
-                        Intent intent = new Intent().setClass(mContext, MainActivity.class);
-                        startActivity(intent);
-                        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                        getActivity().finishAffinity();
-
-                    } else {
-                        APIError error = RetrofitClient.parseHttpError(response);
-                        DialogManager.showSimpleAlert(mContext, RetrofitClient.buildErrorMessage(error));
-                    }
-                } catch (Exception e) {
-                    DialogManager.showSimpleAlert(mContext, R.string.error_json_syntax);
-                }
+            public void onStart() {
+                runLoadingIndicator.postDelayed(showLoadingIndicator, 600);
             }
 
             @Override
-            public void onFailure(Call<AuthRegisterResponse> call, Throwable t) {
-                Log.e(TAG, t.getMessage());
-                DialogManager.showSimpleAlert(mContext, t.getMessage());
+            public void onFinish() {
+                runLoadingIndicator.removeCallbacks(showLoadingIndicator);
+                if (loadingDialog.isShowing()) loadingDialog.dismiss();
+            }
+
+            @Override
+            public void onSuccess(Call<AuthRegisterResponse> call, Response<AuthRegisterResponse> response) {
+                LocalStorage.loginUser(
+                        response.body().getResponse().getIdResource(),
+                        mEditTextEmail.getText().toString(),
+                        mEditTextName.getText().toString(),
+                        mEditTextLastname.getText().toString(),
+                        mEditTextUsername.getText().toString(),
+                        "",
+                        "EmailProvider",
+                        response.body().getResponse().getTokenUser()
+                );
+
+                Intent intent = new Intent().setClass(mContext, MainActivity.class);
+                startActivity(intent);
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                getActivity().finishAffinity();
+            }
+
+            @Override
+            public void onFailure(Call<AuthRegisterResponse> call, APIError error) {
+                DialogManager.createErrorDialog(mContext, RetrofitClient.buildErrorMessage(error));
+            }
+
+            @Override
+            public void onError(Call<AuthRegisterResponse> call, Throwable t) {
+                DialogManager.createErrorDialog(mContext, t.getMessage());
             }
         });
     }

@@ -21,15 +21,14 @@ public class UserDetailFragment extends BaseFragment {
     private static final String TAG = "UserDetail Fragment";
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.constraintLayout) ConstraintLayout mConstraintLayout;
 
     private Context mContext;
-    private OnViewsCreatedListener mOnViewsCreatedListener;
+    private OnToolbarAddedListener mOnToolbarAddedListener;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mOnViewsCreatedListener = setOnViewsCreatedListener(context);
+        mOnToolbarAddedListener = setOnViewsCreatedListener(context);
     }
 
     public UserDetailFragment() {
@@ -56,7 +55,6 @@ public class UserDetailFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mOnViewsCreatedListener.onToolbarViewLoaded(mToolbar);
-        mOnViewsCreatedListener.onConstraintLayoutLoaded(mConstraintLayout);
+        mOnToolbarAddedListener.onToolbarAdded(mToolbar);
     }
 }
