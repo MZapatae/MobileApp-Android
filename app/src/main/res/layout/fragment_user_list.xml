@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="256dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_behavior="cl.mzapatae.mobileApp.utils.FlingBehavior"
         android:fitsSystemWindows="true"
         app:elevation="4dp">
 
@@ -63,14 +64,16 @@
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity = "fill_vertical"
+        android:layout_gravity="fill_vertical"
         android:layout_marginBottom="?attr/actionBarSize"
-        app:layout_behavior = "@string/appbar_scrolling_view_behavior">
+        app:layout_behavior = "@string/appbar_scrolling_view_behavior"
+        android:fillViewport="true">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false" />
+
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

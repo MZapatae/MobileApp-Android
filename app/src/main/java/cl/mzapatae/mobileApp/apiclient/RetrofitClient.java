@@ -31,7 +31,6 @@ public class RetrofitClient {
     private static Retrofit mRetrofit;
 
     private static OkHttpClient.Builder httpBuilder = new OkHttpClient.Builder()
-            .addInterceptor(new JsonInterceptor())
             .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
             .addInterceptor(new RequestInterceptor())
             .readTimeout(30, TimeUnit.SECONDS)

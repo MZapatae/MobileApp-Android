@@ -7,6 +7,9 @@ import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -23,6 +26,7 @@ import cl.mzapatae.mobileApp.apiclient.RestServices;
 import cl.mzapatae.mobileApp.apiclient.RetrofitCallback;
 import cl.mzapatae.mobileApp.apiclient.RetrofitClient;
 import cl.mzapatae.mobileApp.base.BaseFragment;
+import cl.mzapatae.mobileApp.datamodel.adapters.UserListAdapter;
 import cl.mzapatae.mobileApp.datamodel.gson.CelmedianosResponse;
 import cl.mzapatae.mobileApp.datamodel.objects.APIError;
 import cl.mzapatae.mobileApp.utils.DialogManager;
@@ -44,6 +48,8 @@ public class UserListFragment extends BaseFragment {
 
     private Context mContext;
     private OnToolbarAddedListener mOnToolbarAddedListener;
+    private RecyclerView.Adapter mAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
 
     @Override
     public void onAttach(Context context) {
@@ -69,6 +75,13 @@ public class UserListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_list, container, false);
         ButterKnife.bind(this, view);
+
+        mLinearLayoutManager = new LinearLayoutManager(mContext);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
         return view;
     }
 
@@ -106,11 +119,13 @@ public class UserListFragment extends BaseFragment {
 
             @Override
             public void onSuccess(Call<CelmedianosResponse> call, Response<CelmedianosResponse> response) {
-
+                mAdapter = new UserListAdapter(mContext, response.body());
+                mRecyclerView.setAdapter(mAdapter);
             }
 
             @Override
             public void onFailure(Call<CelmedianosResponse> call, APIError error) {
+                //TODO: Add validation for Invalid Token. Call Logout and launch intent to LandingScreen class
                 DialogManager.createErrorDialog(mContext, RetrofitClient.buildErrorMessage(error));
             }
 

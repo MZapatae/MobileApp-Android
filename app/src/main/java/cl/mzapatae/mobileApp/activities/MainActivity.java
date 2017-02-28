@@ -62,6 +62,12 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
         super.onStart();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //mDrawerMenu.setSelection(mDrawerSelectedIdentifier,false);
+    }
+
     private List<IDrawerItem> SetUpDrawerItems() {
         PrimaryDrawerItem userListItem = new PrimaryDrawerItem().withName("Lista Usuarios").withIdentifier(1);
         PrimaryDrawerItem userDetailItem = new PrimaryDrawerItem().withName("Detalle Usuario").withIdentifier(2);
