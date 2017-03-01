@@ -2,7 +2,7 @@ package cl.mzapatae.mobileApp.apiclient;
 
 import cl.mzapatae.mobileApp.datamodel.gson.AuthLoginResponse;
 import cl.mzapatae.mobileApp.datamodel.gson.AuthRegisterResponse;
-import cl.mzapatae.mobileApp.datamodel.gson.CelmedianosResponse;
+import cl.mzapatae.mobileApp.datamodel.gson.UserListResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -44,8 +44,8 @@ public interface RestServices {
 
     /**
      * [GET] - Lista de Usuarios
-     * @return CelmedianosResponse: Respuesta que incluye una lista de usuarios registrados
+     * @return UserListResponse: Respuesta que incluye una lista de usuarios registrados
      */
     @GET("public/celmedianos")
-    Call<CelmedianosResponse> getUserList();
+    Call<UserListResponse> getUserList();
 }

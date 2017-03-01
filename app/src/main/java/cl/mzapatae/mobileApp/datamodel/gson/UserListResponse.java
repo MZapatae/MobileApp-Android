@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 
-public class CelmedianosResponse {
+public class UserListResponse {
     @SerializedName("meta") private MetaResponse metaResponse;
     @SerializedName("celmedianos") private List<User> userList;
 

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cl.mzapatae.mobileApp.R;
-import cl.mzapatae.mobileApp.datamodel.gson.CelmedianosResponse;
+import cl.mzapatae.mobileApp.datamodel.gson.UserListResponse;
 
 /**
  * @author Miguel A. Zapata - MZapatae
@@ -22,10 +22,10 @@ import cl.mzapatae.mobileApp.datamodel.gson.CelmedianosResponse;
 
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
-    private CelmedianosResponse mDataset;
+    private UserListResponse mDataset;
     private Context mContext;
 
-    public UserListAdapter(Context context, CelmedianosResponse dataset) {
+    public UserListAdapter(Context context, UserListResponse dataset) {
         this.mContext = context;
         this.mDataset = dataset;
     }
