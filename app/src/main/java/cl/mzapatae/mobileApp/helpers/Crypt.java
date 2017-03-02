@@ -1,4 +1,4 @@
-package cl.mzapatae.mobileApp.utils;
+package cl.mzapatae.mobileApp.helpers;
 
 import java.security.NoSuchAlgorithmException;
 

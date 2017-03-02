@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cl.mzapatae.mobileApp.R;
 import cl.mzapatae.mobileApp.base.BaseFragment;
-import cl.mzapatae.mobileApp.enums.Animation;
+import cl.mzapatae.mobileApp.helpers.enums.Animation;
 import cl.mzapatae.mobileApp.utils.FragmentUtils;
 
 /**

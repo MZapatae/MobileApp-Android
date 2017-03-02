@@ -1,4 +1,4 @@
-package cl.mzapatae.mobileApp.behaviors;
+package cl.mzapatae.mobileApp.helpers.behaviors;
 
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;

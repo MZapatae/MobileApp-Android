@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import cl.mzapatae.mobileApp.R;
-import cl.mzapatae.mobileApp.enums.Animation;
+import cl.mzapatae.mobileApp.helpers.enums.Animation;
 
 
 /**

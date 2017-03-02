@@ -1,20 +1,11 @@
-package cl.mzapatae.mobileApp.behaviors;
+package cl.mzapatae.mobileApp.helpers.behaviors;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v13.view.ViewCompat;
-import android.support.v4.view.ViewPropertyAnimatorListener;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.Interpolator;
-
-import cl.mzapatae.mobileApp.R;
 
 /**
  * @author Miguel A. Zapata - MZapatae

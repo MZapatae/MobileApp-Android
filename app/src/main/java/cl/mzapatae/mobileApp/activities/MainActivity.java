@@ -37,7 +37,7 @@ import cl.mzapatae.mobileApp.base.BaseFragment;
 import cl.mzapatae.mobileApp.fragments.EmptyFragment;
 import cl.mzapatae.mobileApp.fragments.UserDetailFragment;
 import cl.mzapatae.mobileApp.fragments.UserListFragment;
-import cl.mzapatae.mobileApp.transitions.FragmentsDrawerTransitionSet;
+import cl.mzapatae.mobileApp.helpers.transitions.FragmentsDrawerTransitionSet;
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
 public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener, BaseFragment.OnToolbarAddedListener {

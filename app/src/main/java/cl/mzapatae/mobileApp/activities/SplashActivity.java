@@ -6,7 +6,7 @@ import android.os.Handler;
 
 import cl.mzapatae.mobileApp.R;
 import cl.mzapatae.mobileApp.base.BaseActivity;
-import cl.mzapatae.mobileApp.utils.DeviceInfo;
+import cl.mzapatae.mobileApp.helpers.DeviceInfo;
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
 public class SplashActivity extends BaseActivity {

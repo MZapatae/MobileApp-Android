@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 
 import cl.mzapatae.mobileApp.BuildConfig;
 import cl.mzapatae.mobileApp.apiclient.interceptors.BasicAuthInterceptor;
-import cl.mzapatae.mobileApp.apiclient.interceptors.JsonInterceptor;
 import cl.mzapatae.mobileApp.apiclient.interceptors.RequestInterceptor;
 import cl.mzapatae.mobileApp.apiclient.interceptors.TokenAuthInterceptor;
 import cl.mzapatae.mobileApp.datamodel.gson.ErrorResponse;

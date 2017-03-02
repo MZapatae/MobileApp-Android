@@ -28,7 +28,7 @@ import cl.mzapatae.mobileApp.apiclient.RetrofitClient;
 import cl.mzapatae.mobileApp.base.BaseFragment;
 import cl.mzapatae.mobileApp.datamodel.gson.AuthLoginResponse;
 import cl.mzapatae.mobileApp.datamodel.objects.APIError;
-import cl.mzapatae.mobileApp.utils.Crypt;
+import cl.mzapatae.mobileApp.helpers.Crypt;
 import cl.mzapatae.mobileApp.utils.DialogManager;
 import cl.mzapatae.mobileApp.utils.FormValidator;
 import cl.mzapatae.mobileApp.utils.LocalStorage;

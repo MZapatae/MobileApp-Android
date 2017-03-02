@@ -1,4 +1,4 @@
-package cl.mzapatae.mobileApp.utils;
+package cl.mzapatae.mobileApp.helpers;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -12,6 +12,8 @@ import android.util.Log;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import cl.mzapatae.mobileApp.utils.Constants;
 
 /**
  * This class, return all device data. Version Apps, Model Name, Android id, Android Version

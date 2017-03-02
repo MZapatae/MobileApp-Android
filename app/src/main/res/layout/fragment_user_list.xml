@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_behavior="cl.mzapatae.mobileApp.behaviors.RecyclerViewAppBarBehavior"
+        app:layout_behavior="cl.mzapatae.mobileApp.helpers.behaviors.RecyclerViewAppBarBehavior"
         android:fitsSystemWindows="true"
         app:elevation="4dp">
 
@@ -76,6 +76,7 @@
         app:srcCompat="@drawable/ic_plus"
         android:tint="@color/md_white_1000"
         android:backgroundTint="@color/app.accent"
-        app:fabSize="normal" />
+        app:fabSize="normal"
+        app:layout_behavior="cl.mzapatae.mobileApp.helpers.behaviors.FabScrollBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,4 +1,4 @@
-package cl.mzapatae.mobileApp.enums;
+package cl.mzapatae.mobileApp.helpers.enums;
 
 /**
  * @author Miguel A. Zapata - MZapatae

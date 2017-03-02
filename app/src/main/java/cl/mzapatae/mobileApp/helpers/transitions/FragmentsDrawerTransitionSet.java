@@ -1,4 +1,4 @@
-package cl.mzapatae.mobileApp.transitions;
+package cl.mzapatae.mobileApp.helpers.transitions;
 
 import android.annotation.TargetApi;
 import android.os.Build;
