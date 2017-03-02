@@ -4,7 +4,7 @@ package cl.mzapatae.mobileApp.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +19,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cl.mzapatae.mobileApp.R;
 import cl.mzapatae.mobileApp.apiclient.RestServices;
 import cl.mzapatae.mobileApp.apiclient.RetrofitCallback;
@@ -39,8 +40,8 @@ public class UserListFragment extends BaseFragment {
     private static final String TAG = "UserList Fragment";
     @BindView(R.id.imageView_banner) ImageView mImageViewBanner;
     @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.collapsingToolbarLayout) CollapsingToolbarLayout mCollapsingToolbarLayout;
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
+    @BindView(R.id.fab_addUser) FloatingActionButton mFabAddUser;
 
     private Context mContext;
     private OnToolbarAddedListener mOnToolbarAddedListener;
@@ -77,6 +78,8 @@ public class UserListFragment extends BaseFragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
 
         return view;
     }
@@ -130,5 +133,9 @@ public class UserListFragment extends BaseFragment {
                 DialogManager.createErrorDialog(mContext, t.getMessage());
             }
         });
+    }
+
+    @OnClick(R.id.fab_addUser)
+    public void onClick() {
     }
 }

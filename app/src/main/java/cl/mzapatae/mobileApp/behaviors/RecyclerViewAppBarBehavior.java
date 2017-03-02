@@ -1,4 +1,4 @@
-package cl.mzapatae.mobileApp.utils;
+package cl.mzapatae.mobileApp.behaviors;
 
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;
@@ -20,14 +20,14 @@ import java.util.Map;
  * https://code.google.com/p/android/issues/detail?id=177729...
  */
 
-public final class RecyclerViewAppBarFlingBehavior extends AppBarLayout.Behavior {
+public final class RecyclerViewAppBarBehavior extends AppBarLayout.Behavior {
 
     private Map<RecyclerView, RecyclerViewScrollListener> scrollListenerMap = new HashMap<>(); //keep scroll listener map, the custom scroll listener also keep the current scroll Y position.
 
-    public RecyclerViewAppBarFlingBehavior() {
+    public RecyclerViewAppBarBehavior() {
     }
 
-    public RecyclerViewAppBarFlingBehavior(Context context, AttributeSet attrs) {
+    public RecyclerViewAppBarBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -62,9 +62,9 @@ public final class RecyclerViewAppBarFlingBehavior extends AppBarLayout.Behavior
         private float velocity;
         private WeakReference<CoordinatorLayout> coordinatorLayoutRef;
         private WeakReference<AppBarLayout> childRef;
-        private WeakReference<RecyclerViewAppBarFlingBehavior> behaviorWeakReference;
+        private WeakReference<RecyclerViewAppBarBehavior> behaviorWeakReference;
 
-        public RecyclerViewScrollListener(CoordinatorLayout coordinatorLayout, AppBarLayout child, RecyclerViewAppBarFlingBehavior barBehavior) {
+        public RecyclerViewScrollListener(CoordinatorLayout coordinatorLayout, AppBarLayout child, RecyclerViewAppBarBehavior barBehavior) {
             coordinatorLayoutRef = new WeakReference<>(coordinatorLayout);
             childRef = new WeakReference<>(child);
             behaviorWeakReference = new WeakReference<>(barBehavior);
