@@ -118,19 +118,19 @@ public class UserListFragment extends BaseFragment {
             }
 
             @Override
-            public void onSuccess(Call<UserListResponse> call, Response<UserListResponse> response) {
+            public void onRequestSuccess(Call<UserListResponse> call, Response<UserListResponse> response) {
                 mAdapter = new UserListAdapter(mContext, response.body());
                 mRecyclerView.setAdapter(mAdapter);
             }
 
             @Override
-            public void onFailure(Call<UserListResponse> call, APIError error) {
+            public void onRequestFailure(Call<UserListResponse> call, APIError error) {
                 //TODO: Add validation for Invalid Token. Call Logout and launch intent to LandingScreen class
                 DialogManager.createErrorDialog(mContext, RetrofitClient.buildErrorMessage(error));
             }
 
             @Override
-            public void onError(Call<UserListResponse> call, Throwable t) {
+            public void onRequestError(Call<UserListResponse> call, Throwable t) {
                 DialogManager.createErrorDialog(mContext, t.getMessage());
             }
         });

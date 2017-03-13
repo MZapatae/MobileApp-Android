@@ -167,7 +167,7 @@ public class LoginFragment extends BaseFragment {
                 }
 
                 @Override
-                public void onSuccess(Call<AuthLoginResponse> call, Response<AuthLoginResponse> response) {
+                public void onRequestSuccess(Call<AuthLoginResponse> call, Response<AuthLoginResponse> response) {
                     LocalStorage.loginUser(
                             "0011",
                             mEditTextEmail.getText().toString(),
@@ -186,12 +186,12 @@ public class LoginFragment extends BaseFragment {
                 }
 
                 @Override
-                public void onFailure(Call<AuthLoginResponse> call, APIError error) {
+                public void onRequestFailure(Call<AuthLoginResponse> call, APIError error) {
                     DialogManager.createErrorDialog(mContext, RetrofitClient.buildErrorMessage(error));
                 }
 
                 @Override
-                public void onError(Call<AuthLoginResponse> call, Throwable t) {
+                public void onRequestError(Call<AuthLoginResponse> call, Throwable t) {
                     DialogManager.createErrorDialog(mContext, t.getMessage());
                 }
             });

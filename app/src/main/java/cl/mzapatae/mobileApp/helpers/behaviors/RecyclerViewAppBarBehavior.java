@@ -22,7 +22,8 @@ import java.util.Map;
 
 public final class RecyclerViewAppBarBehavior extends AppBarLayout.Behavior {
 
-    private Map<RecyclerView, RecyclerViewScrollListener> scrollListenerMap = new HashMap<>(); //keep scroll listener map, the custom scroll listener also keep the current scroll Y position.
+    private Map<RecyclerView, RecyclerViewScrollListener> scrollListenerMap = new HashMap<>();
+    //keep scroll listener map, the custom scroll listener also keep the current scroll Y position.
 
     public RecyclerViewAppBarBehavior() {
     }
@@ -51,7 +52,8 @@ public final class RecyclerViewAppBarBehavior extends AppBarLayout.Behavior {
                 recyclerView.addOnScrollListener(recyclerViewScrollListener);
             }
             scrollListenerMap.get(recyclerView).setVelocity(velocityY);
-            consumed = scrollListenerMap.get(recyclerView).getScrolledY() > 0; //recyclerView only consume the fling when it's not scrolled to the top
+            consumed = scrollListenerMap.get(recyclerView).getScrolledY() > 0;
+            //recyclerView only consume the fling when it's not scrolled to the top
         }
         return super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed);
     }

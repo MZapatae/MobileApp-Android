@@ -13,7 +13,7 @@ import android.view.View;
  * Created on: 02-03-2017
  * E-mail: miguel.zapatae@gmail.com
  *
- * This implement fix in hide() adding a Listener to change visibility from GONE to INVISIBLE
+ * Fix for hide() not working, adding a listener to change visibility from GONE to INVISIBLE
  * See more info here: https://code.google.com/p/android/issues/detail?id=230298
  */
 
@@ -24,7 +24,8 @@ public class FabScrollBehavior extends FloatingActionButton.Behavior {
     }
 
     @Override
-    public void onNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+    public void onNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View target,
+                               int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
 
         if(dyConsumed > 0 && child.getVisibility() == View.VISIBLE){
@@ -41,7 +42,8 @@ public class FabScrollBehavior extends FloatingActionButton.Behavior {
     }
 
     @Override
-    public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View directTargetChild, View target, int nestedScrollAxes) {
+    public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child,
+                                       View directTargetChild, View target, int nestedScrollAxes) {
         return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL;
     }
 }

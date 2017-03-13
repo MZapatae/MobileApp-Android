@@ -207,7 +207,7 @@ public class RegisterFragment extends BaseFragment {
             }
 
             @Override
-            public void onSuccess(Call<AuthRegisterResponse> call, Response<AuthRegisterResponse> response) {
+            public void onRequestSuccess(Call<AuthRegisterResponse> call, Response<AuthRegisterResponse> response) {
                 LocalStorage.loginUser(
                         response.body().getResponse().getIdResource(),
                         mEditTextEmail.getText().toString(),
@@ -226,12 +226,12 @@ public class RegisterFragment extends BaseFragment {
             }
 
             @Override
-            public void onFailure(Call<AuthRegisterResponse> call, APIError error) {
+            public void onRequestFailure(Call<AuthRegisterResponse> call, APIError error) {
                 DialogManager.createErrorDialog(mContext, RetrofitClient.buildErrorMessage(error));
             }
 
             @Override
-            public void onError(Call<AuthRegisterResponse> call, Throwable t) {
+            public void onRequestError(Call<AuthRegisterResponse> call, Throwable t) {
                 DialogManager.createErrorDialog(mContext, t.getMessage());
             }
         });

@@ -23,19 +23,19 @@ public abstract class RetrofitCallback<T> implements Callback<T> {
     public final void onResponse(Call<T> call, Response<T> response) {
         try {
             if (response.isSuccessful()) {
-                onSuccess(call, response);
+                onRequestSuccess(call, response);
             } else {
                 APIError error = RetrofitClient.parseHttpError(response);
-                onFailure(call, error);
+                onRequestFailure(call, error);
             }
         } catch (Exception e) {
-            onError(call, e);
+            onRequestError(call, e);
         }
         onFinish();
     }
 
     public final void onFailure(Call<T> call, Throwable t) {
-        onError(call, t);
+        onRequestError(call, t);
         onFinish();
     }
 
@@ -43,11 +43,11 @@ public abstract class RetrofitCallback<T> implements Callback<T> {
 
     public abstract void onFinish();
 
-    public abstract void onSuccess(Call<T> call, Response<T> response);
+    public abstract void onRequestSuccess(Call<T> call, Response<T> response);
 
-    public abstract void onFailure(Call<T> call, APIError error);
+    public abstract void onRequestFailure(Call<T> call, APIError error);
 
-    public abstract void onError(Call<T> call, Throwable t);
+    public abstract void onRequestError(Call<T> call, Throwable t);
 
 }
 

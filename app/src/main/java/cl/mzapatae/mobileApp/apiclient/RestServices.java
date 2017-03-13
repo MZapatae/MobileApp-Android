@@ -17,6 +17,7 @@ import retrofit2.http.POST;
  */
 
 public interface RestServices {
+
     /**
      * [POST] - Registro de Usuario
      * @param usuario: Correo Electronico del Usuario

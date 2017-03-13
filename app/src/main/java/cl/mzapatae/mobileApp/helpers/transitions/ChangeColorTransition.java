@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 @TargetApi(21)
-class ChangeColorTransition extends Transition {
+public class ChangeColorTransition extends Transition {
 
     private static final String PROPNAME_BACKGROUND = "cl.mzapatae:ChangeColorTransition:background";
 

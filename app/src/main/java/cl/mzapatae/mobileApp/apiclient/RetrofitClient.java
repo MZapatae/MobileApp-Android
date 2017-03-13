@@ -29,6 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
     private static Retrofit mRetrofit;
 
+    //TODO: The 'RequestInterceptor()' add a Header with 'api-key' value for ServerAuth defined in file gradle.properties. Remove if necesary
     private static OkHttpClient.Builder httpBuilder = new OkHttpClient.Builder()
             .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
             .addInterceptor(new RequestInterceptor())
