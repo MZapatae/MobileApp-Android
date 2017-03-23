@@ -191,7 +191,7 @@ public class RegisterFragment extends BaseFragment {
             }
         };
 
-        RestServices restServices = RetrofitClient.setConnection(RestServices.class);
+        RestServices restServices = RetrofitClient.getInstance().setConnection(RestServices.class);
         Call<AuthRegisterResponse> call = restServices.registerUser(email, password);
         call.enqueue(new RetrofitCallback<AuthRegisterResponse>() {
 

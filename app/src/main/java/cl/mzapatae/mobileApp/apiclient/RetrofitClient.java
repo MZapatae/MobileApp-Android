@@ -27,38 +27,46 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class RetrofitClient {
-    private static Retrofit mRetrofit;
+    private static final RetrofitClient instance = new RetrofitClient();
+    private OkHttpClient.Builder mHttpBuilder;
+    private static Retrofit.Builder mRetrofitBuilder;
 
+
+    public static RetrofitClient getInstance() {
+        return instance;
+    }
     //TODO: The 'RequestInterceptor()' add a Header with 'api-key' value for ServerAuth defined in file gradle.properties. Remove if necesary
-    private static OkHttpClient.Builder httpBuilder = new OkHttpClient.Builder()
-            .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
-            .addInterceptor(new RequestInterceptor())
-            .readTimeout(30, TimeUnit.SECONDS)
-            .connectTimeout(20, TimeUnit.SECONDS);
 
-    private static Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-            .baseUrl(BuildConfig.API_BASE)
-            .addConverterFactory(GsonConverterFactory.create());
+    private RetrofitClient() {
+        mHttpBuilder = new OkHttpClient.Builder()
+                .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
+                .addInterceptor(new RequestInterceptor())
+                .readTimeout(30, TimeUnit.SECONDS)
+                .connectTimeout(20, TimeUnit.SECONDS);
 
-    public static <S> S setAuthConnection(Class<S> serviceClass, String user, String password) {
-        OkHttpClient client = httpBuilder.addInterceptor(new BasicAuthInterceptor(user, password)).build();
-        mRetrofit = retrofitBuilder.client(client).build();
-        return mRetrofit.create(serviceClass);
+        mRetrofitBuilder = new Retrofit.Builder()
+                .baseUrl(BuildConfig.API_BASE)
+                .addConverterFactory(GsonConverterFactory.create());
     }
 
-    public static <S> S setAuthConnection(Class<S> serviceClass, String userToken) {
-        OkHttpClient client = httpBuilder.addInterceptor(new TokenAuthInterceptor(userToken)).build();
-        mRetrofit = retrofitBuilder.client(client).build();
-        return mRetrofit.create(serviceClass);
+    public <S> S setAuthConnection(Class<S> serviceClass, String user, String password) {
+        OkHttpClient client = mHttpBuilder.addInterceptor(new BasicAuthInterceptor(user, password)).build();
+        return mRetrofitBuilder.client(client).build().create(serviceClass);
     }
 
-    public static <S> S setConnection(Class<S> serviceClass) {
-        mRetrofit = retrofitBuilder.client(httpBuilder.build()).build();
-        return mRetrofit.create(serviceClass);
+    public <S> S setAuthConnection(Class<S> serviceClass, String userToken) {
+        OkHttpClient client = mHttpBuilder.addInterceptor(new TokenAuthInterceptor(userToken)).build();
+        return mRetrofitBuilder.client(client).build().create(serviceClass);
+    }
+
+    public <S> S setConnection(Class<S> serviceClass) {
+        OkHttpClient client = mHttpBuilder.build();
+        return mRetrofitBuilder.client(client).build().create(serviceClass);
     }
 
     public static APIError parseHttpError(Response<?> response) {
-        Converter<ResponseBody, APIError> converter = mRetrofit.responseBodyConverter(APIError.class, new Annotation[0]);
+        Converter<ResponseBody, APIError> converter = mRetrofitBuilder.build()
+                .responseBodyConverter(APIError.class, new Annotation[0]);
         APIError error;
         try {
             error = converter.convert(response.errorBody());

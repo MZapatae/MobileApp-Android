@@ -151,7 +151,7 @@ public class LoginFragment extends BaseFragment {
             Crypt crypt = new Crypt();
             String encryptedPass = Base64.encodeToString(crypt.encrypt(password), Base64.NO_WRAP);
 
-            RestServices restServices = RetrofitClient.setAuthConnection(RestServices.class, email, encryptedPass);
+            RestServices restServices = RetrofitClient.getInstance().setAuthConnection(RestServices.class, email, encryptedPass);
             Call<AuthLoginResponse> call = restServices.loginUser(null);
             call.enqueue(new RetrofitCallback<AuthLoginResponse>() {
 

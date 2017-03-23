@@ -102,7 +102,7 @@ public class UserListFragment extends BaseFragment {
             }
         };
 
-        RestServices restServices = RetrofitClient.setAuthConnection(RestServices.class, LocalStorage.getPrefUserToken());
+        RestServices restServices = RetrofitClient.getInstance().setAuthConnection(RestServices.class, LocalStorage.getPrefUserToken());
         Call<UserListResponse> call = restServices.getUserList();
         call.enqueue(new RetrofitCallback<UserListResponse>() {
 
