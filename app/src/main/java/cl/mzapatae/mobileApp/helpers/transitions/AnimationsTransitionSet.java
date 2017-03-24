@@ -19,9 +19,9 @@ import cl.mzapatae.mobileApp.R;
 
 //TODO: Add, remove or change transitions and targets if necesary
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class FragmentsDrawerTransitionSet extends TransitionSet {
+public class AnimationsTransitionSet extends TransitionSet {
 
-    public FragmentsDrawerTransitionSet() {
+    public AnimationsTransitionSet() {
         setOrdering(ORDERING_TOGETHER);
 
         ChangeColorTransition changeColor = new ChangeColorTransition();

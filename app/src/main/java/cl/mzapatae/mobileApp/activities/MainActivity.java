@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -37,7 +36,6 @@ import cl.mzapatae.mobileApp.base.BaseFragment;
 import cl.mzapatae.mobileApp.fragments.EmptyFragment;
 import cl.mzapatae.mobileApp.fragments.UserDetailFragment;
 import cl.mzapatae.mobileApp.fragments.UserListFragment;
-import cl.mzapatae.mobileApp.helpers.transitions.FragmentsDrawerTransitionSet;
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
 public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener, BaseFragment.OnToolbarAddedListener {
@@ -46,7 +44,6 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
 
     private Drawer mDrawerMenu;
     private int mDrawerSelectedIdentifier;
-    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +61,7 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
     @Override
     public void onResume() {
         super.onResume();
-        //mDrawerMenu.setSelection(mDrawerSelectedIdentifier,false);
+        mDrawerMenu.setSelection(mDrawerSelectedIdentifier,false);
     }
 
     private List<IDrawerItem> SetUpDrawerItems() {
@@ -175,14 +172,6 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
 
             try {
                 if (fragment != null) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        fragment.setSharedElementEnterTransition(new FragmentsDrawerTransitionSet());
-                        fragment.setSharedElementReturnTransition(new FragmentsDrawerTransitionSet());
-
-                        if (mToolbar != null)
-                            transaction.addSharedElement(mToolbar, "ToolbarTransition");
-                    }
-
                     transaction.replace(R.id.fragment_container, fragment, fragment.getClass().getName());
                     transaction.addToBackStack(fragment.getClass().getName());
                     transaction.commit();
@@ -225,7 +214,6 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
 
     @Override
     public void onToolbarAdded(Toolbar toolbar) {
-        mToolbar = toolbar;
         mDrawerMenu.setToolbar(this, toolbar, true);
     }
 }

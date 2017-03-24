@@ -32,6 +32,7 @@ public class BaseFragment extends Fragment {
         }
     }
 
+
     @Override
     public android.view.animation.Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
         if (enter) {
