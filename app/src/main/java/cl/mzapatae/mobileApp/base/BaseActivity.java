@@ -31,6 +31,4 @@ public class BaseActivity extends AppCompatActivity {
         super.onPause();
         BaseApplication.activityPaused();
     }
-
-
 }
