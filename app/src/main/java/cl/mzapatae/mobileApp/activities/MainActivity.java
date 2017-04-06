@@ -163,7 +163,7 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
             try {
                 if (fragment != null) {
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                    transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
                     transaction.replace(R.id.fragment_container, fragment);
                     transaction.addToBackStack(fragment.getClass().getName());
                     transaction.commit();

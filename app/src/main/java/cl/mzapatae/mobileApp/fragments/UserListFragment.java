@@ -156,7 +156,7 @@ public class UserListFragment extends BaseFragment {
             if (!UserDetailFragment.class.isInstance(fragment))
                 fragment = UserDetailFragment.newInstance(id, name);
 
-            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out,R.anim.fade_in, R.anim.fade_out);
             transaction.replace(R.id.fragment_container, fragment, fragment.getClass().getName());
             transaction.addToBackStack(fragment.getClass().getName());
             transaction.commit();
