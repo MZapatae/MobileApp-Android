@@ -36,8 +36,12 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 /**
- * A simple {@link Fragment} subclass.
+ * @author Miguel A. Zapata - MZapatae
+ * @version 1.0
+ * Created on: 05-14-17
+ * E-mail: miguel.zapatae@gmail.com
  */
+
 public class LoginFragment extends BaseFragment {
     private static final String TAG = "Login Fragment";
     @BindView(R.id.editText_email) TextInputEditText mEditTextEmail;

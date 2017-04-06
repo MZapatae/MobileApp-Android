@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_behavior="cl.mzapatae.mobileApp.helpers.behaviors.RecyclerViewAppBarBehavior"
+        app:layout_behavior="cl.mzapatae.mobileApp.helpers.behaviors.RecyclerViewFlingBehavior"
         android:fitsSystemWindows="true"
         app:elevation="4dp">
 

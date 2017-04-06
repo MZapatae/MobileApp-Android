@@ -34,7 +34,6 @@ import cl.mzapatae.mobileApp.R;
 import cl.mzapatae.mobileApp.base.BaseActivity;
 import cl.mzapatae.mobileApp.base.BaseFragment;
 import cl.mzapatae.mobileApp.fragments.EmptyFragment;
-import cl.mzapatae.mobileApp.fragments.UserDetailFragment;
 import cl.mzapatae.mobileApp.fragments.UserListFragment;
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
@@ -66,13 +65,11 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
 
     private List<IDrawerItem> SetUpDrawerItems() {
         PrimaryDrawerItem userListItem = new PrimaryDrawerItem().withName("Lista Usuarios").withIdentifier(1);
-        PrimaryDrawerItem userDetailItem = new PrimaryDrawerItem().withName("Detalle Usuario").withIdentifier(2);
-        PrimaryDrawerItem testItem = new PrimaryDrawerItem().withName("Test").withIdentifier(3);
+        PrimaryDrawerItem testItem = new PrimaryDrawerItem().withName("Test").withIdentifier(2);
         PrimaryDrawerItem logoutItem = new PrimaryDrawerItem().withName("Cerrar Sesion").withIdentifier(4);
 
         List<IDrawerItem> menuDrawerItems = new ArrayList<>();
         menuDrawerItems.add(userListItem);
-        menuDrawerItems.add(userDetailItem);
         menuDrawerItems.add(testItem);
         menuDrawerItems.add(new DividerDrawerItem());
         menuDrawerItems.add(logoutItem);
@@ -144,7 +141,6 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
         if (drawerItem.getIdentifier() != mDrawerSelectedIdentifier) {
             Fragment fragment = null;
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             switch (((int) drawerItem.getIdentifier())) {
                 case 1:
@@ -154,15 +150,9 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
                     break;
 
                 case 2:
-                    fragment = getSupportFragmentManager().findFragmentByTag(UserDetailFragment.class.getName());
-                    if (!UserDetailFragment.class.isInstance(fragment))
-                        fragment = UserDetailFragment.newInstance();
-                    break;
-
-                case 3:
                     fragment = getSupportFragmentManager().findFragmentByTag(EmptyFragment.class.getName());
                     if (!EmptyFragment.class.isInstance(fragment))
-                        fragment = EmptyFragment.newInstance();
+                        fragment = EmptyFragment.newInstance(null, null);
                     break;
 
                 case 4:
@@ -172,10 +162,11 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
 
             try {
                 if (fragment != null) {
-                    transaction.replace(R.id.fragment_container, fragment, fragment.getClass().getName());
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                    transaction.replace(R.id.fragment_container, fragment);
                     transaction.addToBackStack(fragment.getClass().getName());
                     transaction.commit();
-
                     mDrawerSelectedIdentifier = (int) drawerItem.getIdentifier();
                 }
             }catch(Exception e){

@@ -13,22 +13,22 @@ import java.util.Map;
 
 
 /**
- * Fix for Fling Problem
+ * Fix for Fling Problem with RecyclerView and AppBar
  * Check this threads to know about the problem.
  *
  * http://stackoverflow.com/questions/30923889/flinging-with-recyclerview-appbarlayout
  * https://code.google.com/p/android/issues/detail?id=177729...
  */
 
-public final class RecyclerViewAppBarBehavior extends AppBarLayout.Behavior {
+public final class RecyclerViewFlingBehavior extends AppBarLayout.Behavior {
 
     private Map<RecyclerView, RecyclerViewScrollListener> scrollListenerMap = new HashMap<>();
     //keep scroll listener map, the custom scroll listener also keep the current scroll Y position.
 
-    public RecyclerViewAppBarBehavior() {
+    public RecyclerViewFlingBehavior() {
     }
 
-    public RecyclerViewAppBarBehavior(Context context, AttributeSet attrs) {
+    public RecyclerViewFlingBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -64,9 +64,9 @@ public final class RecyclerViewAppBarBehavior extends AppBarLayout.Behavior {
         private float velocity;
         private WeakReference<CoordinatorLayout> coordinatorLayoutRef;
         private WeakReference<AppBarLayout> childRef;
-        private WeakReference<RecyclerViewAppBarBehavior> behaviorWeakReference;
+        private WeakReference<RecyclerViewFlingBehavior> behaviorWeakReference;
 
-        public RecyclerViewScrollListener(CoordinatorLayout coordinatorLayout, AppBarLayout child, RecyclerViewAppBarBehavior barBehavior) {
+        public RecyclerViewScrollListener(CoordinatorLayout coordinatorLayout, AppBarLayout child, RecyclerViewFlingBehavior barBehavior) {
             coordinatorLayoutRef = new WeakReference<>(coordinatorLayout);
             childRef = new WeakReference<>(child);
             behaviorWeakReference = new WeakReference<>(barBehavior);

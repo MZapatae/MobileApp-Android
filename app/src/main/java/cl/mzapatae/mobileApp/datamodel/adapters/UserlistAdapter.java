@@ -46,6 +46,10 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         holder.mTextViewEmail.setText(email);
     }
 
+    public UserListResponse getDataset() {
+        return mDataset;
+    }
+
     @Override
     public int getItemCount() {
         return mDataset.getUserList().size();

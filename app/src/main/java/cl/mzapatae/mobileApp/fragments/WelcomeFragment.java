@@ -3,6 +3,8 @@ package cl.mzapatae.mobileApp.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +15,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cl.mzapatae.mobileApp.R;
 import cl.mzapatae.mobileApp.base.BaseFragment;
-import cl.mzapatae.mobileApp.helpers.enums.Animation;
-import cl.mzapatae.mobileApp.utils.FragmentUtils;
 
 /**
- * A simple {@link Fragment} subclass.
+ * @author Miguel A. Zapata - MZapatae
+ * @version 1.0
+ * Created on: 05-14-17
+ * E-mail: miguel.zapatae@gmail.com
  */
+
 public class WelcomeFragment extends BaseFragment {
     private static final String TAG = "Welcome FRG";
 
@@ -53,16 +57,34 @@ public class WelcomeFragment extends BaseFragment {
 
     @OnClick({R.id.button_login, R.id.button_signup})
     public void onClick(View view) {
-        Fragment fragment;
-        switch (view.getId()) {
-            case R.id.button_login:
-                fragment = LoginFragment.newInstance();
-                FragmentUtils.replaceTransaction(getFragmentManager(), fragment, Animation.FADE, true);
-                break;
-            case R.id.button_signup:
-                fragment = RegisterFragment.newInstance();
-                FragmentUtils.replaceTransaction(getFragmentManager(), fragment, Animation.FADE, true);
-                break;
+        try {
+            Fragment fragment = null;
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+            switch (view.getId()) {
+                case R.id.button_login:
+                    fragment = getFragmentManager().findFragmentByTag(LoginFragment.class.getName());
+                    if (!LoginFragment.class.isInstance(fragment))
+                        fragment = LoginFragment.newInstance();
+
+                    transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+                    transaction.addToBackStack(fragment.getClass().getName());
+                    break;
+
+                case R.id.button_signup:
+                    fragment = getFragmentManager().findFragmentByTag(RegisterFragment.class.getName());
+                    if (!RegisterFragment.class.isInstance(fragment))
+                        fragment = RegisterFragment.newInstance();
+
+                    transaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+                    transaction.addToBackStack(fragment.getClass().getName());
+                    break;
+            }
+
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.commit();
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage());
         }
     }
 
