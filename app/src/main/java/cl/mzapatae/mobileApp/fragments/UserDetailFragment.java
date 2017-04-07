@@ -3,6 +3,7 @@ package cl.mzapatae.mobileApp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cl.mzapatae.mobileApp.R;
 import cl.mzapatae.mobileApp.base.BaseFragment;
+import cl.mzapatae.mobileApp.utils.VectorialImage;
 
 /**
  * @author Miguel A. Zapata - MZapatae
@@ -62,6 +64,7 @@ public class UserDetailFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = getContext();
         if (getArguments() != null) {
             mUserName = getArguments().getString(ARG_USER_NAME);
             mUserAge = getArguments().getString(ARG_USER_ID);
@@ -72,12 +75,15 @@ public class UserDetailFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_detail, container, false);
         ButterKnife.bind(this, view);
+
+        mOnToolbarAddedListener.onToolbarAdded(mToolbar);
+        mToolbar.setNavigationIcon(VectorialImage.setVectorialDrawable(mContext, R.drawable.ic_arrow_back_black_24dp, R.color.toolbar_arrow_light));
+
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mOnToolbarAddedListener.onToolbarAdded(mToolbar);
     }
 }

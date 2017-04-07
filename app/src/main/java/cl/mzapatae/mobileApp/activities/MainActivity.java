@@ -206,5 +206,7 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
     @Override
     public void onToolbarAdded(Toolbar toolbar) {
         mDrawerMenu.setToolbar(this, toolbar, true);
+        //setSupportActionBar(toolbar);
+
     }
 }
