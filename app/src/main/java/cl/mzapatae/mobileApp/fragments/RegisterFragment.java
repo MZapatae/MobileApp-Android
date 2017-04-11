@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -231,12 +230,12 @@ public class RegisterFragment extends BaseFragment {
 
             @Override
             public void onRequestFailure(Call<AuthRegisterResponse> call, APIError error) {
-                DialogManager.createErrorDialog(mContext, RetrofitClient.buildErrorMessage(error));
+                DialogManager.showErrorDialog(mContext, RetrofitClient.buildErrorMessage(error));
             }
 
             @Override
             public void onRequestError(Call<AuthRegisterResponse> call, Throwable t) {
-                DialogManager.createErrorDialog(mContext, t.getMessage());
+                DialogManager.showErrorDialog(mContext, t.getMessage());
             }
         });
     }

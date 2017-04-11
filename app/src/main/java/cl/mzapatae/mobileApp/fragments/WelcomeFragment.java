@@ -67,7 +67,7 @@ public class WelcomeFragment extends BaseFragment {
                     if (!LoginFragment.class.isInstance(fragment))
                         fragment = LoginFragment.newInstance();
 
-                    transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+                    transaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
                     transaction.addToBackStack(fragment.getClass().getName());
                     break;
 
@@ -76,7 +76,7 @@ public class WelcomeFragment extends BaseFragment {
                     if (!RegisterFragment.class.isInstance(fragment))
                         fragment = RegisterFragment.newInstance();
 
-                    transaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+                    transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
                     transaction.addToBackStack(fragment.getClass().getName());
                     break;
             }

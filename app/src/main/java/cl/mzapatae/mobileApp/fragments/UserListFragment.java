@@ -139,12 +139,12 @@ public class UserListFragment extends BaseFragment {
             @Override
             public void onRequestFailure(Call<UserListResponse> call, APIError error) {
                 //TODO: Add validation for Invalid Token. Call Logout and launch intent to LandingScreen class
-                DialogManager.createErrorDialog(mContext, RetrofitClient.buildErrorMessage(error));
+                DialogManager.showErrorDialog(mContext, RetrofitClient.buildErrorMessage(error));
             }
 
             @Override
             public void onRequestError(Call<UserListResponse> call, Throwable t) {
-                DialogManager.createErrorDialog(mContext, t.getMessage());
+                DialogManager.showErrorDialog(mContext, t.getMessage());
             }
         });
     }
