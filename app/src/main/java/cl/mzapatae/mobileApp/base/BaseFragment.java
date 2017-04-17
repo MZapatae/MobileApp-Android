@@ -23,11 +23,23 @@ public class BaseFragment extends Fragment {
         void onToolbarAdded(Toolbar toolbar);
     }
 
+    public interface OnLockDrawerMenuListener {
+        void onLockDrawerMenuStatus(boolean lock);
+    }
+
     protected OnToolbarAddedListener setOnViewsCreatedListener(Context context) {
         try {
             return (OnToolbarAddedListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement OnToolbarAddedListener");
+        }
+    }
+
+    protected OnLockDrawerMenuListener setOnLockDrawerMenuListener(Context context) {
+        try {
+            return (OnLockDrawerMenuListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + "must implement OnLockDrawerMenuListener");
         }
     }
 }

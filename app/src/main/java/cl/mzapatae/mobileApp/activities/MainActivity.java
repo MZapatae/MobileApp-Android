@@ -8,11 +8,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -37,7 +40,8 @@ import cl.mzapatae.mobileApp.fragments.EmptyFragment;
 import cl.mzapatae.mobileApp.fragments.UserListFragment;
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
-public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener, BaseFragment.OnToolbarAddedListener {
+public class MainActivity extends BaseActivity implements
+        Drawer.OnDrawerItemClickListener, BaseFragment.OnToolbarAddedListener ,BaseFragment.OnLockDrawerMenuListener, FragmentManager.OnBackStackChangedListener {
     private static final String TAG = "Main Activity";
     @BindView(R.id.fragment_container) FrameLayout fragmentContainer;
 
@@ -188,25 +192,50 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
 
     @Override
     public void onBackPressed() {
-        if (mDrawerMenu != null && mDrawerMenu.isDrawerOpen()) {
-            mDrawerMenu.closeDrawer();
-        } else {
-            if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-                finish();
-            } else {
-                // Empty all backstack and fragments references and Create initial fragment again
-                FragmentManager.BackStackEntry first = getSupportFragmentManager().getBackStackEntryAt(0);
-                getSupportFragmentManager().popBackStackImmediate(first.getId(), 0);
-                mDrawerSelectedIdentifier = 1;
-                mDrawerMenu.setSelection(1, false);
-            }
-        }
+        onBackNavigation();
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        onBackNavigation();
     }
 
     @Override
     public void onToolbarAdded(Toolbar toolbar) {
         mDrawerMenu.setToolbar(this, toolbar, true);
-        //setSupportActionBar(toolbar);
 
+    }
+
+    @Override
+    public void onLockDrawerMenuStatus(boolean lock) {
+        if (lock) {
+            mDrawerMenu.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        } else {
+            mDrawerMenu.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+    }
+
+    private void onBackNavigation() {
+        if (mDrawerMenu != null && mDrawerMenu.isDrawerOpen()) {
+            mDrawerMenu.closeDrawer();
+        } else {
+            int backStackCount = getSupportFragmentManager().getBackStackEntryCount();
+            String firstTag = getSupportFragmentManager().getBackStackEntryAt(0).getName();
+            String lastTag = getSupportFragmentManager().getBackStackEntryAt(backStackCount - 1).getName();
+
+            if ((backStackCount == 1) || (firstTag.contentEquals(lastTag))) {
+                finish();
+            } else {
+                if (mDrawerMenu.getDrawerLayout().getDrawerLockMode(Gravity.START) == DrawerLayout.LOCK_MODE_LOCKED_CLOSED) {
+                    getSupportFragmentManager().popBackStackImmediate();
+                } else {
+                    // Empty all backstack and fragments references and Create initial fragment again
+                    FragmentManager.BackStackEntry first = getSupportFragmentManager().getBackStackEntryAt(0);
+                    getSupportFragmentManager().popBackStackImmediate(first.getId(), 0);
+                    mDrawerSelectedIdentifier = 1;
+                    mDrawerMenu.setSelection(1, false);
+                }
+            }
+        }
     }
 }

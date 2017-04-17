@@ -3,7 +3,6 @@ package cl.mzapatae.mobileApp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,11 +32,13 @@ public class UserDetailFragment extends BaseFragment {
     private String mUserName;
     private String mUserAge;
     private OnToolbarAddedListener mOnToolbarAddedListener;
+    private OnLockDrawerMenuListener mOnLockDrawerMenuListener;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mOnToolbarAddedListener = setOnViewsCreatedListener(context);
+        mOnLockDrawerMenuListener = setOnLockDrawerMenuListener(context);
     }
 
     public UserDetailFragment() {
@@ -77,13 +78,21 @@ public class UserDetailFragment extends BaseFragment {
         ButterKnife.bind(this, view);
 
         mOnToolbarAddedListener.onToolbarAdded(mToolbar);
-        mToolbar.setNavigationIcon(VectorialImage.setVectorialDrawable(mContext, R.drawable.ic_arrow_back_black_24dp, R.color.toolbar_arrow_light));
+        mOnLockDrawerMenuListener.onLockDrawerMenuStatus(true);
+        mToolbar.setNavigationIcon(VectorialImage.setVectorialDrawable(mContext, R.drawable.ic_arrow_back_24dp, R.color.toolbar_arrow_light));
 
+        //TODO: Arreglar funcionamiento de boton navegacion (abre menu, deberia retroceder)
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mOnLockDrawerMenuListener.onLockDrawerMenuStatus(false);
     }
 }
