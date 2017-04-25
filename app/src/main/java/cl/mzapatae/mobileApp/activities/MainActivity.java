@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -40,8 +42,8 @@ import cl.mzapatae.mobileApp.fragments.EmptyFragment;
 import cl.mzapatae.mobileApp.fragments.UserListFragment;
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
-public class MainActivity extends BaseActivity implements
-        Drawer.OnDrawerItemClickListener, BaseFragment.OnToolbarAddedListener ,BaseFragment.OnLockDrawerMenuListener, FragmentManager.OnBackStackChangedListener {
+public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener, Drawer.OnDrawerNavigationListener,
+        BaseFragment.OnToolbarAddedListener ,BaseFragment.OnLockDrawerMenuListener {
     private static final String TAG = "Main Activity";
     @BindView(R.id.fragment_container) FrameLayout fragmentContainer;
 
@@ -125,7 +127,8 @@ public class MainActivity extends BaseActivity implements
                         //TODO: Implement edit profile
                         return false;
                     }
-                }).build();
+                })
+                .build();
 
         mDrawerMenu = new DrawerBuilder()
                 .withActivity(this)
@@ -135,7 +138,9 @@ public class MainActivity extends BaseActivity implements
                 .withDrawerItems(drawerItems)
                 .withCloseOnClick(true)
                 .withSelectedItem(1)
+                .withOnDrawerNavigationListener(this)
                 .withOnDrawerItemClickListener(this)
+                .withActionBarDrawerToggleAnimated(true)
                 .build();
 
         mDrawerMenu.setSelection(1, true);
@@ -196,12 +201,8 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onBackStackChanged() {
-        onBackNavigation();
-    }
-
-    @Override
     public void onToolbarAdded(Toolbar toolbar) {
+        //setSupportActionBar(toolbar);
         mDrawerMenu.setToolbar(this, toolbar, true);
 
     }
@@ -210,8 +211,16 @@ public class MainActivity extends BaseActivity implements
     public void onLockDrawerMenuStatus(boolean lock) {
         if (lock) {
             mDrawerMenu.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            mDrawerMenu.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
+
+            ActionBar actionBar = this.getSupportActionBar();
+            if (actionBar != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         } else {
             mDrawerMenu.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
+            ActionBar actionBar = this.getSupportActionBar();
+            if (actionBar != null) getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            mDrawerMenu.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
         }
     }
 
@@ -237,5 +246,11 @@ public class MainActivity extends BaseActivity implements
                 }
             }
         }
+    }
+
+    @Override
+    public boolean onNavigationClickListener(View clickedView) {
+        onBackNavigation();
+        return true;
     }
 }

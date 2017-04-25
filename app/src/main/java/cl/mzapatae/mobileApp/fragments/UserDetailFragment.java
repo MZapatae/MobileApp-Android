@@ -3,6 +3,8 @@ package cl.mzapatae.mobileApp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,6 +72,10 @@ public class UserDetailFragment extends BaseFragment {
             mUserName = getArguments().getString(ARG_USER_NAME);
             mUserAge = getArguments().getString(ARG_USER_ID);
         }
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
+
     }
 
     @Override
@@ -79,7 +85,6 @@ public class UserDetailFragment extends BaseFragment {
 
         mOnToolbarAddedListener.onToolbarAdded(mToolbar);
         mOnLockDrawerMenuListener.onLockDrawerMenuStatus(true);
-        mToolbar.setNavigationIcon(VectorialImage.setVectorialDrawable(mContext, R.drawable.ic_arrow_back_24dp, R.color.toolbar_arrow_light));
 
         //TODO: Arreglar funcionamiento de boton navegacion (abre menu, deberia retroceder)
         return view;
