@@ -73,8 +73,6 @@ public class UserDetailFragment extends BaseFragment {
             mUserAge = getArguments().getString(ARG_USER_ID);
         }
 
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -86,7 +84,6 @@ public class UserDetailFragment extends BaseFragment {
         mOnToolbarAddedListener.onToolbarAdded(mToolbar);
         mOnLockDrawerMenuListener.onLockDrawerMenuStatus(true);
 
-        //TODO: Arreglar funcionamiento de boton navegacion (abre menu, deberia retroceder)
         return view;
     }
 

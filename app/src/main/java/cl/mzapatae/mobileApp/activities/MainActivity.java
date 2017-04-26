@@ -10,14 +10,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -200,11 +198,12 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
         onBackNavigation();
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void onToolbarAdded(Toolbar toolbar) {
-        //setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
         mDrawerMenu.setToolbar(this, toolbar, true);
-
     }
 
     @Override
