@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "cl.mzapatae.mobileapp"
+        applicationId "cl.mzapatae.mobileApp"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 0
@@ -19,22 +19,71 @@ android {
         buildConfigField("String", "AES_IV", SECRET_AES_IV)
     }
 
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def appName = "MobileApp"
+            def separator = " "
+            def underscore = "_"
+            def buildType = "-" + variant.variantData.variantConfiguration.buildType.name
+            def version = "v" + variant.versionName
+            def build = "b"
+            def date = new Date();
+            def formattedDate = date.format('ddMMyy')
+
+            def apkName = appName + separator + version + underscore + build + formattedDate + buildType + ".apk"
+            output.outputFile = new File(output.outputFile.parent, apkName)
+        }
+    }
+
+    signingConfigs {
+        release
+    }
+
     buildTypes {
         def RELEASE_SERVER = "\"http://190.196.23.181/APIRest/\"";
-        def TESTING_SERVER = "\"http://190.196.23.181/APIRest/\"";
+        def DEVELOP_SERVER = "\"http://190.196.23.181/APIRest/\"";
 
         debug {
-            buildConfigField("String", "API_BASE", TESTING_SERVER)
-            applicationIdSuffix ".debug"
-            versionNameSuffix " - DEBUG"
+            debuggable true
+            shrinkResources false
+            minifyEnabled false
+            applicationIdSuffix ".dev"
+
+            buildConfigField("String", "API_BASE", DEVELOP_SERVER)
+            resValue "string", "app_name", "MobileApp Dev"
         }
 
         release {
+            debuggable false
+            shrinkResources true
+            minifyEnabled true
+
             buildConfigField("String", "API_BASE", RELEASE_SERVER)
-            minifyEnabled false
+            resValue "string", "app_name", "MobileApp"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
+}
+
+def Properties props = new Properties()
+def propFile = new File('signing.properties')
+if (propFile.canRead()){
+    props.load(new FileInputStream(propFile))
+
+    if (props!=null && props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
+            props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
+        android.signingConfigs.release.storeFile = file(props['STORE_FILE'])
+        android.signingConfigs.release.storePassword = props['STORE_PASSWORD']
+        android.signingConfigs.release.keyAlias = props['KEY_ALIAS']
+        android.signingConfigs.release.keyPassword = props['KEY_PASSWORD']
+    } else {
+        println 'signing.properties found but some entries are missing'
+        android.buildTypes.release.signingConfig = null
+    }
+}else {
+    println 'signing.properties not found'
+    android.buildTypes.release.signingConfig = null
 }
 
 dependencies {
@@ -43,26 +92,29 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-
-
-
-    compile('com.mikepenz:materialdrawer:5.8.1@aar') { transitive = true }
-
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta5'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
     compile 'com.google.code.gson:gson:2.7'
+    compile 'com.google.firebase:firebase-messaging:9.6.1'
+
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+
     compile 'com.jakewharton:butterknife:8.4.0'
+    compile('com.mikepenz:materialdrawer:5.8.1@aar') { transitive = true }
     compile 'com.afollestad.material-dialogs:core:0.9.1.0'
+
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 }
+
+apply plugin: 'com.google.gms.google-services'
 
 
 

@@ -38,15 +38,20 @@ import cl.mzapatae.mobileApp.base.BaseActivity;
 import cl.mzapatae.mobileApp.base.BaseFragment;
 import cl.mzapatae.mobileApp.fragments.EmptyFragment;
 import cl.mzapatae.mobileApp.fragments.UserListFragment;
+import cl.mzapatae.mobileApp.utils.Constants;
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
 public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener, Drawer.OnDrawerNavigationListener,
-        BaseFragment.OnToolbarAddedListener ,BaseFragment.OnLockDrawerMenuListener {
+        BaseFragment.OnToolbarAddedListener ,
+        BaseFragment.OnLockDrawerMenuListener {
     private static final String TAG = "Main Activity";
     @BindView(R.id.fragment_container) FrameLayout fragmentContainer;
 
+    //TODO: Change for default starter section
+    private static final int START_ITEM_ID = 1;
+
     private Drawer mDrawerMenu;
-    private int mDrawerSelectedIdentifier;
+    private int mLastMenuItemSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +59,9 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         createDrawerMenu(SetUpDrawerItems());
-    }
 
+        loadScreen(getIntent());
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -64,7 +70,7 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
     @Override
     public void onResume() {
         super.onResume();
-        mDrawerMenu.setSelection(mDrawerSelectedIdentifier,false);
+        mDrawerMenu.setSelection(mLastMenuItemSelected,false);
     }
 
     private List<IDrawerItem> SetUpDrawerItems() {
@@ -109,9 +115,9 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
         });
 
         ProfileDrawerItem userProfile = new ProfileDrawerItem()
-                .withName(LocalStorage.getPrefUserFirstname() + " " + LocalStorage.getPrefUserLastname())
-                .withEmail(LocalStorage.getPrefUserEmail())
-                .withIcon(LocalStorage.getPrefUserAvatar());
+                .withName(LocalStorage.getInstance(this).getPrefUserFirstname() + " " + LocalStorage.getInstance(this).getPrefUserLastname())
+                .withEmail(LocalStorage.getInstance(this).getPrefUserEmail())
+                .withIcon(LocalStorage.getInstance(this).getPrefUserAvatar());
 
         AccountHeader headerMenu = new AccountHeaderBuilder()
                 .withActivity(this)
@@ -140,13 +146,31 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
                 .withOnDrawerItemClickListener(this)
                 .withActionBarDrawerToggleAnimated(true)
                 .build();
+    }
 
-        mDrawerMenu.setSelection(1, true);
+    @SuppressWarnings("ConstantConditions")
+    private void loadScreen(Intent intent) {
+        //TODO: Manage Intent Filter from Push Notification here!
+        try {
+            switch (intent.getAction()) {
+                case Constants.ACTION_MAIN:
+                    mDrawerMenu.setSelection(START_ITEM_ID, true);
+                    break;
+
+                case Constants.OPEN_SECTION:
+                    mDrawerMenu.setSelection(Integer.valueOf(intent.getExtras().getString("section")), true);
+                    break;
+            }
+        } catch (Exception e) {
+            mDrawerMenu.setSelection(START_ITEM_ID, true);
+            Log.e(TAG, "Invalid Intent");
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     @Override
     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-        if (drawerItem.getIdentifier() != mDrawerSelectedIdentifier) {
+        if (drawerItem.getIdentifier() != mLastMenuItemSelected) {
             Fragment fragment = null;
 
             switch (((int) drawerItem.getIdentifier())) {
@@ -174,11 +198,11 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
                     transaction.replace(R.id.fragment_container, fragment);
                     transaction.addToBackStack(fragment.getClass().getName());
                     transaction.commit();
-                    mDrawerSelectedIdentifier = (int) drawerItem.getIdentifier();
+                    mLastMenuItemSelected = (int) drawerItem.getIdentifier();
                 }
             }catch(Exception e){
                 Log.e(TAG, "Exception: " + e.getMessage());
-                mDrawerMenu.setSelection(mDrawerSelectedIdentifier, false);
+                mDrawerMenu.setSelection(mLastMenuItemSelected, false);
             }
         } else {
             mDrawerMenu.closeDrawer();
@@ -187,7 +211,7 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
     }
 
     private void logoutUser() {
-        LocalStorage.logoutUser();
+        LocalStorage.getInstance(this).logoutUser();
         Intent launchWelcomeScreen = new Intent(MainActivity.this, LandingActivity.class);
         this.startActivity(launchWelcomeScreen);
         finish();
@@ -211,12 +235,11 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
         if (lock) {
             mDrawerMenu.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             mDrawerMenu.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
-
             ActionBar actionBar = this.getSupportActionBar();
             if (actionBar != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         } else {
             mDrawerMenu.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-
             ActionBar actionBar = this.getSupportActionBar();
             if (actionBar != null) getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             mDrawerMenu.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
@@ -227,21 +250,15 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
         if (mDrawerMenu != null && mDrawerMenu.isDrawerOpen()) {
             mDrawerMenu.closeDrawer();
         } else {
-            int backStackCount = getSupportFragmentManager().getBackStackEntryCount();
-            String firstTag = getSupportFragmentManager().getBackStackEntryAt(0).getName();
-            String lastTag = getSupportFragmentManager().getBackStackEntryAt(backStackCount - 1).getName();
-
-            if ((backStackCount == 1) || (firstTag.contentEquals(lastTag))) {
-                finish();
+            if ((mDrawerMenu != null ? mDrawerMenu.getDrawerLayout().getDrawerLockMode(Gravity.START) : 0) == DrawerLayout.LOCK_MODE_LOCKED_CLOSED) {
+                getSupportFragmentManager().popBackStackImmediate();
             } else {
-                if (mDrawerMenu.getDrawerLayout().getDrawerLockMode(Gravity.START) == DrawerLayout.LOCK_MODE_LOCKED_CLOSED) {
-                    getSupportFragmentManager().popBackStackImmediate();
+                if (mLastMenuItemSelected == START_ITEM_ID) {
+                    finish();
                 } else {
-                    // Empty all backstack and fragments references and Create initial fragment again
-                    FragmentManager.BackStackEntry first = getSupportFragmentManager().getBackStackEntryAt(0);
-                    getSupportFragmentManager().popBackStackImmediate(first.getId(), 0);
-                    mDrawerSelectedIdentifier = 1;
-                    mDrawerMenu.setSelection(1, false);
+                    String firstTag = getSupportFragmentManager().getBackStackEntryAt(0).getName();
+                    getSupportFragmentManager().popBackStackImmediate(firstTag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    mDrawerMenu.setSelection(START_ITEM_ID, true);
                 }
             }
         }

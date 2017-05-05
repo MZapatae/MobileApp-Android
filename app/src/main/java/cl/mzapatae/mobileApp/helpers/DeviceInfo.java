@@ -13,6 +13,7 @@ import android.util.Log;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import cl.mzapatae.mobileApp.BuildConfig;
 import cl.mzapatae.mobileApp.utils.Constants;
 
 /**

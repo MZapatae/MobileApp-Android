@@ -8,5 +8,10 @@ package cl.mzapatae.mobileApp.utils;
  */
 
 public class Constants {
-    public static final String PACKAGE_APP = "cl.mzapatae.mobileLegacy";
+    //TODO: Check Constants
+    public static final String PACKAGE_APP = "cl.mzapatae.mobileApp";
+
+    //TODO: Notifications Click_Actions
+    public static final String ACTION_MAIN = "android.intent.action.MAIN";
+    public static final String OPEN_SECTION = "intent.action.OPEN_SECTION";
 }

@@ -20,7 +20,9 @@ import cl.mzapatae.mobileApp.BuildConfig;
 public class LocalStorage {
     private static final String TAG = "LocalStorage";
 
-    private static final String PREF_STORAGE_FILE = "mobileApp.storage";
+    private static LocalStorage mInstance = null;
+
+    private static final String PREF_STORAGE_FILE = "mobileApp.storage"; //TODO: Rename File
 
     private static final String PREF_APP_NAME = "appName";
     private static final String PREF_DEVICE_ID = "deviceId";
@@ -42,9 +44,16 @@ public class LocalStorage {
 
     private static SharedPreferences SHARED_PREFERENCE;
 
-    public static void initLocalStorage(Context context) {
+    private LocalStorage(Context context) {
         SHARED_PREFERENCE = context.getSharedPreferences(PREF_STORAGE_FILE, Activity.MODE_PRIVATE);
         Log.i(TAG, "Local Storage Init Sucess");
+    }
+
+    public static LocalStorage getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new LocalStorage(context);
+        }
+        return mInstance;
     }
 
     public static void loginUser(String uid, String email,String firstName, String lastName, String displayName, String avatarUrl, String userProvider, String userToken) {
@@ -71,104 +80,104 @@ public class LocalStorage {
         }
     }
 
-    public static String getPrefUserUid() {
+    public String getPrefUserUid() {
         return SHARED_PREFERENCE.getString(PREF_USER_UID, "");
     }
 
-    public static String getPrefUserToken() {
+    public String getPrefUserToken() {
         return SHARED_PREFERENCE.getString(PREF_USER_TOKEN, "");
     }
 
-    public static String getPrefUserProvider() {
+    public String getPrefUserProvider() {
         return SHARED_PREFERENCE.getString(PREF_USER_PROVIDER, "");
     }
 
-    public static String getPrefUserDisplayname() {
+    public String getPrefUserDisplayname() {
         return SHARED_PREFERENCE.getString(PREF_USER_DISPLAYNAME, "");
     }
 
-    public static String getPrefUserLastname() {
+    public String getPrefUserLastname() {
         return SHARED_PREFERENCE.getString(PREF_USER_LASTNAME, "");
     }
 
-    public static String getPrefUserFirstname() {
+    public String getPrefUserFirstname() {
         return SHARED_PREFERENCE.getString(PREF_USER_FIRSTNAME, "");
     }
 
-    public static String getPrefUserEmail() {
+    public String getPrefUserEmail() {
         return SHARED_PREFERENCE.getString(PREF_USER_EMAIL, "");
     }
 
-    public static String getPrefUserAvatar() {
+    public String getPrefUserAvatar() {
         return SHARED_PREFERENCE.getString(PREF_USER_AVATAR, "");
     }
 
-    public static Boolean isUserLogged() {
+    public Boolean isUserLogged() {
         return SHARED_PREFERENCE.getBoolean(PREF_LOGGED_IN, false);
     }
 
-    public static String getPrefUserTokenId() {
+    public String getPrefUserTokenId() {
         return SHARED_PREFERENCE.getString(PREF_USER_TOKEN, "");
     }
 
-    public static String getPrefDeviceId() {
+    public String getPrefDeviceId() {
         return SHARED_PREFERENCE.getString(PREF_DEVICE_ID, "");
     }
 
-    public static String getPrefVersionApp() {
+    public String getPrefVersionApp() {
         return SHARED_PREFERENCE.getString(PREF_VERSION_APP, "");
     }
 
-    public static String getPrefTokenPush() {
+    public String getPrefTokenPush() {
         return SHARED_PREFERENCE.getString(PREF_TOKEN_PUSH, "");
     }
 
-    public static String getPrefModelDevice() {
+    public String getPrefModelDevice() {
         return SHARED_PREFERENCE.getString(PREF_MODEL_DEVICE, "");
     }
 
-    public static String getPrefManufacturerDevice() {
+    public String getPrefManufacturerDevice() {
         return SHARED_PREFERENCE.getString(PREF_MANUFACTURER_DEVICE, "");
     }
 
-    public static String getPrefAndroidVersion() {
+    public String getPrefAndroidVersion() {
         return SHARED_PREFERENCE.getString(PREF_ANDROID_VERSION, "");
     }
 
-    public static String getPrefAppName() {
+    public String getPrefAppName() {
         return SHARED_PREFERENCE.getString(PREF_APP_NAME, "");
     }
 
-    public static void logoutUser() {
+    public void logoutUser() {
         SHARED_PREFERENCE.edit().putBoolean(PREF_LOGGED_IN, false).apply();
         SHARED_PREFERENCE.edit().remove(PREF_USER_TOKEN).apply();
     }
 
-    public static void setPrefDeviceId(String deviceId) {
+    public void setPrefDeviceId(String deviceId) {
         SHARED_PREFERENCE.edit().putString(PREF_DEVICE_ID, deviceId).apply();
     }
 
-    public static void setPrefVersionApp(String versionApp) {
+    public void setPrefVersionApp(String versionApp) {
         SHARED_PREFERENCE.edit().putString(PREF_VERSION_APP, versionApp).apply();
     }
 
-    public static void setPrefTokenPush(String tokenPush) {
+    public void setPrefTokenPush(String tokenPush) {
         SHARED_PREFERENCE.edit().putString(PREF_TOKEN_PUSH, tokenPush).apply();
     }
 
-    public static void setPrefModelDevice(String modelDevice) {
+    public void setPrefModelDevice(String modelDevice) {
         SHARED_PREFERENCE.edit().putString(PREF_MODEL_DEVICE, modelDevice).apply();
     }
 
-    public static void setPrefManufacturerDevice(String manufacturerDevice) {
+    public void setPrefManufacturerDevice(String manufacturerDevice) {
         SHARED_PREFERENCE.edit().putString(PREF_MANUFACTURER_DEVICE, manufacturerDevice).apply();
     }
 
-    public static void setPrefAndroidVersion(String androidVersion) {
+    public void setPrefAndroidVersion(String androidVersion) {
         SHARED_PREFERENCE.edit().putString(PREF_ANDROID_VERSION, androidVersion).apply();
     }
 
-    public static void setPrefAppName(String appName) {
+    public void setPrefAppName(String appName) {
         SHARED_PREFERENCE.edit().putString(PREF_APP_NAME, appName).apply();
     }
 }

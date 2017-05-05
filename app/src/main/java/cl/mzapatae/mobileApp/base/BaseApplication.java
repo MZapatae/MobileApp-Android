@@ -21,7 +21,6 @@ public class BaseApplication extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
-        LocalStorage.initLocalStorage(base);
     }
 
     public static boolean isActivityVisible() {

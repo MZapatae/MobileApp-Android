@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">Mobile App</string>
-
     <string name="textview_welcome">Bienvenido</string>
     <string name="textview_register">Registrate</string>
 
@@ -33,9 +31,6 @@
     <!-- itemlist_user.xml -->
     <string name="itemlist_name">Nombre: %1$s</string>
     <string name="itemlist_email">Email: %1$s</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
