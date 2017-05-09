@@ -1,10 +1,13 @@
 package cl.mzapatae.mobileApp.activities;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +20,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -39,16 +44,18 @@ import cl.mzapatae.mobileApp.base.BaseFragment;
 import cl.mzapatae.mobileApp.fragments.EmptyFragment;
 import cl.mzapatae.mobileApp.fragments.UserListFragment;
 import cl.mzapatae.mobileApp.utils.Constants;
+import cl.mzapatae.mobileApp.utils.DialogManager;
 import cl.mzapatae.mobileApp.utils.LocalStorage;
 
-public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener, Drawer.OnDrawerNavigationListener,
+public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener,
+        Drawer.OnDrawerNavigationListener,
         BaseFragment.OnToolbarAddedListener ,
         BaseFragment.OnLockDrawerMenuListener {
-    private static final String TAG = "Main Activity";
-    @BindView(R.id.fragment_container) FrameLayout fragmentContainer;
 
-    //TODO: Change for default starter section
-    private static final int START_ITEM_ID = 1;
+    private static final String TAG = "Main Activity";
+    private static final int START_ITEM_ID = 1; //TODO: Change for default starter section
+
+    @BindView(R.id.fragment_container) FrameLayout fragmentContainer;
 
     private Drawer mDrawerMenu;
     private int mLastMenuItemSelected;
@@ -59,8 +66,7 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         createDrawerMenu(SetUpDrawerItems());
-
-        loadScreen(getIntent());
+        processIntent(getIntent());
     }
     @Override
     protected void onStart() {
@@ -71,6 +77,12 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
     public void onResume() {
         super.onResume();
         mDrawerMenu.setSelection(mLastMenuItemSelected,false);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.INTENT_ACTION_MAIN);
+        intentFilter.addAction(Constants.INTENT_OPEN_SECTION);
+        intentFilter.addAction(Constants.INTENT_SHOW_MESSAGE);
+        NotificationBroadcastReceiver receiver = new NotificationBroadcastReceiver();
+        registerReceiver(receiver, intentFilter);
     }
 
     private List<IDrawerItem> SetUpDrawerItems() {
@@ -149,16 +161,41 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void loadScreen(Intent intent) {
+    private void processIntent(final Intent intent) {
         //TODO: Manage Intent Filter from Push Notification here!
         try {
             switch (intent.getAction()) {
-                case Constants.ACTION_MAIN:
+                case Constants.INTENT_ACTION_MAIN:
                     mDrawerMenu.setSelection(START_ITEM_ID, true);
                     break;
 
-                case Constants.OPEN_SECTION:
-                    mDrawerMenu.setSelection(Integer.valueOf(intent.getExtras().getString("section")), true);
+                case Constants.INTENT_OPEN_SECTION:
+                    final MaterialDialog.Builder materialDialog = DialogManager.createDialog(
+                            this,
+                            intent.getExtras().getString("title"),
+                            intent.getExtras().getString("message")
+                    );
+
+                    materialDialog
+                            .positiveText(R.string.dialog_button_accept)
+                            .negativeText(R.string.dialog_button_cancel)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    mDrawerMenu.setSelection(Integer.valueOf(intent.getExtras().getString("section")), true);
+                                }
+                            })
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                    break;
+
+                case Constants.INTENT_SHOW_MESSAGE:
+                    DialogManager.showDialog(this, intent.getExtras().getString("title"), intent.getExtras().getString("message"));
+                    if (getSupportFragmentManager().getBackStackEntryCount() == 0) mDrawerMenu.setSelection(START_ITEM_ID, true);
                     break;
             }
         } catch (Exception e) {
@@ -269,4 +306,15 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
         onBackNavigation();
         return true;
     }
+
+    private class NotificationBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            processIntent(intent);
+            Log.d(TAG, "Foreground Notification Detected");
+        }
+    }
+
+
+
 }

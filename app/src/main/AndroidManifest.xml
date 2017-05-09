@@ -20,6 +20,10 @@
                 <action android:name="intent.action.OPEN_SECTION" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="intent.action.SHOW_MESSAGE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity android:name=".activities.LandingActivity" />
         <activity android:name=".activities.MainActivity" />

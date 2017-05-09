@@ -15,7 +15,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.Map;
 
 import cl.mzapatae.mobileApp.R;
-import cl.mzapatae.mobileApp.activities.SplashActivity;
+import cl.mzapatae.mobileApp.base.BaseApplication;
 import cl.mzapatae.mobileApp.utils.Constants;
 
 /**
@@ -25,10 +25,10 @@ import cl.mzapatae.mobileApp.utils.Constants;
  * E-mail: miguel.zapatae@gmail.com
  */
 
+//TODO: Improve on message received
 public class FcmCallbackService extends FirebaseMessagingService {
     private static final String TAG = "FCM Callback Service";
     private static final int GCM_REQUEST_CODE = 6900;
-
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -41,35 +41,37 @@ public class FcmCallbackService extends FirebaseMessagingService {
         String clickAction = remoteMessage.getNotification().getClickAction();
         Map parameters = remoteMessage.getData();
 
-        if (parameters == null || parameters.isEmpty() || clickAction == null || clickAction.equalsIgnoreCase(Constants.ACTION_MAIN)) {
-            sendNotification(title, message, buildIntent());
+        if (parameters == null || parameters.isEmpty() || clickAction == null || clickAction.equalsIgnoreCase(Constants.INTENT_ACTION_MAIN)) {
+            if (BaseApplication.isActivityVisible()) {
+                Intent intent = new Intent();
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                sendBroadcast(intent);
+            }
         } else {
-            sendNotification(title, message, buildCustomIntent(parameters, clickAction));
+            if (BaseApplication.isActivityVisible()) {
+                Log.d(TAG, "Custom Data Detected");
+                Intent intent = new Intent();
+
+                if (clickAction.equalsIgnoreCase(Constants.INTENT_OPEN_SECTION)) {
+                    intent.setAction(clickAction);
+                    intent.putExtra("section", parameters.get("section").toString());
+                    Log.d(TAG, "Click Action: INTENT_OPEN_SECTION Validate!");
+                }
+
+                if (clickAction.equalsIgnoreCase(Constants.INTENT_SHOW_MESSAGE)) {
+                    intent.setAction(clickAction);
+                    intent.putExtra("title", title);
+                    intent.putExtra("message", message);
+                    Log.d(TAG, "Click Action: INTENT_SHOW_MESSAGE Validate!");
+                }
+
+                sendBroadcast(intent);
+            }
         }
-    }
-
-    private Intent buildIntent() {
-        Intent intent = new Intent(this, SplashActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        return intent;
-    }
-
-    //TODO: Change Extras for custom parameters to push
-    private Intent buildCustomIntent(Map parameters, String clickAction) {
-        Intent intent = new Intent(this, SplashActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        Log.d(TAG, "Custom Data Detected");
-
-        if (clickAction.equalsIgnoreCase(Constants.OPEN_SECTION)) {
-            intent.setAction(clickAction);
-            intent.putExtra("section", parameters.get("section").toString());
-            Log.d(TAG, "Click Action: OPEN_SECTION Validate!");
-        }
-
-        return intent;
     }
 
     private void sendNotification(String title, String message, Intent intent) {
+        //TODO: Customize intent with custom action or extra
         PendingIntent pendingIntent = PendingIntent.getActivity(this, GCM_REQUEST_CODE, intent, PendingIntent.FLAG_ONE_SHOT);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 

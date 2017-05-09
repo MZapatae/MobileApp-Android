@@ -11,7 +11,8 @@ public class Constants {
     //TODO: Check Constants
     public static final String PACKAGE_APP = "cl.mzapatae.mobileApp";
 
-    //TODO: Notifications Click_Actions
-    public static final String ACTION_MAIN = "android.intent.action.MAIN";
-    public static final String OPEN_SECTION = "intent.action.OPEN_SECTION";
+    //TODO: Notifications Click_Actions, change in manifest too
+    public static final String INTENT_ACTION_MAIN = "android.intent.action.MAIN";
+    public static final String INTENT_OPEN_SECTION = "intent.action.OPEN_SECTION";
+    public static final String INTENT_SHOW_MESSAGE = "intent.action.SHOW_MESSAGE";
 }

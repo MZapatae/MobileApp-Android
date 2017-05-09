@@ -14,6 +14,7 @@
     <string name="dialog_title_loading">Por favor, espere…</string>
     <string name="dialog_message_loading">Cargando contenido</string>
     <string name="dialog_button_accept">Aceptar</string>
+    <string name="dialog_button_cancel">Cancelar</string>
 
     <string name="button_login">Ingresar</string>
     <string name="button_register">Registrar</string>

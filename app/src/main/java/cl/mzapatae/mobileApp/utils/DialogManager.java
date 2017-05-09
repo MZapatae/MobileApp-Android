@@ -31,7 +31,7 @@ public class DialogManager {
                 .show();
     }
 
-    public static MaterialDialog showAttentionDialog(Context context, String message) {
+    public static MaterialDialog showAlertDialog(Context context, String message) {
         return new MaterialDialog.Builder(context)
                 .title(R.string.dialog_title_alert)
                 .content(message)
@@ -44,6 +44,28 @@ public class DialogManager {
                     }
                 })
                 .show();
+    }
+
+    public static MaterialDialog showDialog(Context context, String title, String message) {
+        return new MaterialDialog.Builder(context)
+                .title(title)
+                .content(message)
+                .autoDismiss(false)
+                .positiveText(R.string.dialog_button_accept)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    public static MaterialDialog.Builder createDialog(Context context, String title, String message) {
+        return new MaterialDialog.Builder(context)
+                .title(title)
+                .content(message)
+                .autoDismiss(false);
     }
 
 
